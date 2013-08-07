@@ -1,5 +1,5 @@
 require.config({
-    baseUrl: '../js',
+    baseUrl: 'js',
     shim: {
         OpenLayers: {
             exports: 'OpenLayers'
@@ -9,27 +9,23 @@ require.config({
         }
     },
     paths: {
-        "backbone": "lib/backbone-amd/backbone",
-        "jquery": "lib/jquery/jquery",
-        "OpenLayers": "lib/OpenLayers",
-        // "OpenLayers": "lib/openlayers/lib/OpenLayers",
-        "underscore": "lib/underscore-amd/underscore",
-        "handlebars": "lib/handlebars/handlebars"
+        "backbone": "../bower_components/backbone-amd/backbone",
+        "jquery": "../bower_components/jquery/jquery",
+        "OpenLayers": "lib/OpenLayers/OpenLayers",
+        "underscore": "../bower_components/underscore-amd/underscore",
+        "handlebars": "../bower_components/handlebars/handlebars"
     }
 });
 
-require(["transit/model",
-        "transit/ui", 
-        "transit/config"], function (model, ui, config) {
+require([
+    "views/tags",
+    "views/map"
+], function (TagsView, MapView) {
     'use strict';
 
-    var dataModel;
+    console.log("init");
+    var tags_view = new MapView();
 
-    dataModel = model.init();
-
-    ui.init({
-        controls: 'editor'
-    });
-
+    console.log(tags_view);
 
 });

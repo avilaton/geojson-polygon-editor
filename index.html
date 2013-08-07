@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Obras Privadas y Uso de Suelo">
     <meta name="author" content="Gastón Avila">
-    <link href="css/google.css" rel="stylesheet" type="text/css">
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet" type="text/css">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="stylesheets/css/google.css" rel="stylesheet" type="text/css">
+    <link href="stylesheets/css/bootstrap.css" rel="stylesheet">
+    <link href="stylesheets/css/main.css" rel="stylesheet" type="text/css">
+    <link href="stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -33,7 +33,7 @@
     
     <div class="container-fluid">
         <div class="row-fluid">
-            <div class="span2">
+            <div class="span3">
                 <div class="control-group">
                   <label class="control-label"></label>
                   <legend>Capas del mapa</legend>
@@ -62,7 +62,7 @@
                 </div>
             </div>
             
-            <div class="span10" id="mapBox">
+            <div class="span9" id="mapBox">
                 <div id="map" class="smallmap"></div>
             </div>
         </div>
@@ -90,16 +90,15 @@
       {{/each}}
       </dl>
     </script>
-    <script data-main="../js/main" src="js/lib/require.js"></script>
+    <script data-main="js/main" src="js/lib/require.js"></script>
+    <!-- 
     <script src="js/lib/jquery.js"></script>
     <script src="js/lib/underscore-min.js"></script>
     <script src="js/lib/backbone-min.js"></script>
     <script src="js/lib/bootstrap.min.js"></script>
     <script src="js/lib/handlebars.js"></script>
     <script src="js/lib/OpenLayers/OpenLayers.js"></script>
-    <!-- 
     <script src="http://maps.google.com/maps/api/js?v=3.6&sensor=false"></script>
-    -->
     <script src="../js/init.js"></script>
     <script src="../js/views/tags.js"></script>
     <script src="../js/views/map.js"></script>
@@ -110,7 +109,6 @@
 
         polygons.core.init({
           cgiDirectory: '/cgi-bin/',
-          docDirectory: 'http://www.cordoba.gov.ar/cordobaciudad/principal2/docs/obrasprivadas/',          
           database: 'obrasprivadas',
         });
 
@@ -118,5 +116,6 @@
 
       });
     </script>
+    -->
   </body>
 </html>
