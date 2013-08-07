@@ -1,0 +1,21 @@
+{
+  "name": "urban-layers",
+  "dependencies": {
+    "backbone": "~1.0.0",
+    "handlebars": "~1.0.0",
+    "jquery": "~2.0.3",
+    "underscore": "~1.5.1"
+  },
+  "version": "0.0.1",
+  "main": "js/init.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "underscore": "~1.5.1"
+  }
+}
