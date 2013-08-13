@@ -84,6 +84,7 @@ define(["OpenLayers",
         var lon = lon || -64.1857371;
         var lat = lat || -31.4128832;
         var zoom = zoom || 12;
+
         this.map.setCenter(
           new OpenLayers.LonLat(lon, lat).transform(
             new OpenLayers.Projection("EPSG:4326"),
