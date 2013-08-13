@@ -18,14 +18,10 @@ require.config({
 });
 
 require([
-    "views/tags",
-    "views/map"
-], function (TagsView, MapView) {
+    "views/layout"
+], function (LayoutView) {
     'use strict';
 
-    console.log("init");
-    var tags_view = new MapView();
-
-    console.log(tags_view);
+    var layout_view = new LayoutView();
 
 });
