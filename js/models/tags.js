@@ -7,9 +7,24 @@ function (_, Backbone) {
 
 	var TagsModel = Backbone.Model.extend({
 
-		initialize: function () {
-		}
+		initialize: function (data) {
+			this.buildTagsArray(data);
+		},
 
+    buildTagsArray: function (data) {
+      var result = [];
+
+      for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+          result.push({
+            title: key,
+            desc: data[key]
+          });
+        }
+      };
+
+      this.set({tags: result});
+    }
 	}); 
 
 	return TagsModel;
