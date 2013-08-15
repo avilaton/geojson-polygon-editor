@@ -1,0 +1,23 @@
+body {
+    padding-top: 60px; 
+    /* 60px to make the container go all the way to the bottom of the topbar */
+    height: 100%;
+}
+#mapBox {
+	/* padding-bottom: 30px;*/
+}
+#map {
+    height:98%;
+    width:100%;
+}
+dt {
+    text-transform: capitalize;
+}
+#footer .navbar-inner{
+    min-height:15px;
+}
+#footer.navbar .nav > li > a{
+    min-height:15px;
+    padding:1px 5px 1px;
+}
+
