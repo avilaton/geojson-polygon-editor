@@ -13,7 +13,8 @@ require.config({
         "jquery": "../../bower_components/jquery/jquery",
         "OpenLayers": "lib/OpenLayers/OpenLayers",
         "underscore": "../../bower_components/underscore-amd/underscore",
-        "handlebars": "../../bower_components/handlebars/handlebars"
+        "handlebars": "../../bower_components/handlebars/handlebars",
+        "text": "../../bower_components/requirejs-text/text"
     }
 });
 
@@ -22,6 +23,14 @@ require([
 ], function (LayoutView) {
     'use strict';
 
-    var layout_view = new LayoutView();
+    var App = {};
+    
+    App.vent = _.extend({}, Backbone.Events);
+
+    App.layout_view = new LayoutView(App.vent);
+    
+    window.App = App;
+
+    return App;
 
 });

@@ -5,7 +5,8 @@
     "jquery": "~2.0.3",
     "requirejs": "~2.1.8",
     "backbone-amd": "~1.0.0",
-    "underscore-amd": "~1.5.1"
+    "underscore-amd": "~1.5.1",
+    "requirejs-text": "~2.0.10"
   },
   "version": "0.0.1",
   "main": "js/init.js",

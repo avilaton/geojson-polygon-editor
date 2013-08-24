@@ -534,6 +534,7 @@
    "id": "75"
   },
   {
+   "properties": {"codigo": "abc123"},
    "geometry": {
     "type": "Polygon",
     "coordinates": [

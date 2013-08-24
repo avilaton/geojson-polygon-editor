@@ -1,33 +1,34 @@
 define([
-    "underscore",
-    "backbone",
-    "handlebars",
-    "models/tags"],
-function (_, Backbone, Handlebars, TagsModel) {
+  "underscore",
+  "backbone",
+  "handlebars",
+  "models/tags",
+  "text!../../templates/tags.handlebars"
+  ],
+function (_, Backbone, Handlebars, TagsModel, TagsTemplate) {
 
-    console.log("tags view");
+  var TagsView = Backbone.View.extend({
+    
+    el:$("#tags"),
 
-    var TagsView = Backbone.View.extend({
-        
-        el:$("#tags"),
+    template: Handlebars.compile(TagsTemplate),
 
-        template: Handlebars.compile($("#tagsTemplate").html()),
+    initialize: function(model){ 
+      
+      this.listenTo(this.model, "change", this.render);
+      this.render();
+    },
 
-        initialize: function(model){ 
-            
-            this.listenTo(this.model, "change", this.render);
+    render: function () {
+      var self = this,
+        testTags = [{title:"a", desc: "b"}];
 
-            this.render();
-        },
-
-        render: function () {
-          var self = this;
-
-          this.$el.html(this.template(self.model.attributes));
-        },
+      this.$el.html(this.template(self.model.attributes));
+      //this.$el.html(this.template({tags:testTags}));
+    },
 
 
-    }); 
+  }); 
 
-    return TagsView;
+  return TagsView;
 });
