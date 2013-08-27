@@ -112,14 +112,12 @@ define(["OpenLayers",
 
       toJSON: function (features) {
         var result = this.format.write(features);
-        console.log(result);
+        console.log("feature to json", result);
         $('#result').text(result);
-        this.trigger("featureselected");
-        console.log(this);
+        // this.trigger("featureselected");
       },
 
       selectedFeature: function (event) {
-        // console.log("selected feature event");
         App.vent.trigger("featureselected", event);
       }
 

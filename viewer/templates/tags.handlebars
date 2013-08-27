@@ -1,6 +1,26 @@
+
 <dl class="dl">
 	{{#each tags}}
-		<dt>{{title}}</dt>
-		<dd>{{desc}}</dd>
+		<dt style="background:#f1f1f1">
+			<a href="#" class="tag-remove" data-id="{{id}}" style="float: right">
+				<i class="icon-remove"></i>
+			</a>
+			<a href="#" class="tag-edit" data-id="{{id}}" style="float: right">
+				<i class="icon-pencil"></i>
+			</a>
+			{{this.title}}
+		</dt>
+		<dd>{{this.desc}}</dd>
 	{{/each}}
 </dl>
+
+<select>
+	<option>Area Tipo 1</option>
+	<option>Area Tipo 2</option>
+	<option>Area Tipo 4</option>
+</select>
+
+<input type="text" value="{{title}}" placeholder="title"/>
+<textarea placeholder="description">{{desc}}</textarea>
+	<button class="btn btn-primary">Save</button>
+<button class="btn">Cancel</button>

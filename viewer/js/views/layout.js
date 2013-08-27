@@ -2,10 +2,13 @@ define([
   "underscore",
   "backbone",
   "handlebars",
-  "models/tags",
+  "collections/tags",
   "views/map",
-  "views/tags"],
-function (_, Backbone, Handlebars, TagsModel, MapView, TagsView) {
+  "views/tags",
+  "text!../../templates/viewlayout.handlebars"
+  ],
+function (_, Backbone, Handlebars, TagsCollection, MapView, 
+  TagsView, ViewLayoutTemplate) {
 
   var View = Backbone.View.extend({
     el: $("#layout"),
@@ -47,7 +50,7 @@ function (_, Backbone, Handlebars, TagsModel, MapView, TagsView) {
       }
     },
 
-    template: Handlebars.compile($("#layoutTemplate").html()),
+    template: Handlebars.compile(ViewLayoutTemplate),
 
     initialize: function(vent) {
       var self = this;
@@ -68,18 +71,16 @@ function (_, Backbone, Handlebars, TagsModel, MapView, TagsView) {
 
       self.mapView.addSelectControl(["obrasprivadas","usodesuelo", "barrios"]);
 
-      self.tags_model = new TagsModel();
+      self.tags_collection = new TagsCollection();
 
       self.tags_view = new TagsView({
         el: $("#tags"),
-        model: self.tags_model
+        collection: self.tags_collection
       });
 
       vent.on("featureselected",function (event) {
         self.mapEvent(event);
       });
-
-
     },
 
     render: function () {
@@ -88,13 +89,12 @@ function (_, Backbone, Handlebars, TagsModel, MapView, TagsView) {
 
     mapEvent: function (event) {
       var self = this;
-      console.log("catched map event", event);
-      this.mapView.toJSON(event.feature);
+      // this.mapView.toJSON(event.feature);
 
       if (event.type == "featureselected") {
-        self.tags_model.buildTagsArray(event.feature.data);
+        self.tags_collection.tagsFromData(event.feature.data);
       } else if (event.type == "featureunselected") {
-        self.tags_model.buildTagsArray({});
+        self.tags_collection.reset();
       };
     },
 
