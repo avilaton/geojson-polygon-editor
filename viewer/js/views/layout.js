@@ -15,7 +15,8 @@ function (_, Backbone, Handlebars, TagsCollection, MapView,
     events: {
       "click .checkbox": "onClickBarrios",
       "change input[name=capasOption]": "onClickRadio",
-      "featureselected": "rendertags"
+      "featureselected": "rendertags",
+      "click .btn.save-layer": "saveLayer"
     },
     layers: {
       barrios: {
@@ -92,7 +93,7 @@ function (_, Backbone, Handlebars, TagsCollection, MapView,
       // this.mapView.toJSON(event.feature);
 
       if (event.type == "featureselected") {
-        self.tags_collection.tagsFromData(event.feature.data);
+        self.tags_collection.parseFeature(event.feature);
       } else if (event.type == "featureunselected") {
         self.tags_collection.reset();
       };

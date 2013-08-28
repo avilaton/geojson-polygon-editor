@@ -1,11 +1,11 @@
 
 <dl class="dl">
 	{{#each tags}}
-		<dt style="background:#f1f1f1">
-			<a href="#" class="tag-remove" data-id="{{id}}" style="float: right">
-				<i class="icon-remove"></i>
+		<dt>
+			<a href="#" class="remove-tag" data-id="{{id}}">
+				<i class="icon-trash"></i>
 			</a>
-			<a href="#" class="tag-edit" data-id="{{id}}" style="float: right">
+			<a href="#" class="edit-tag" data-id="{{id}}">
 				<i class="icon-pencil"></i>
 			</a>
 			{{this.title}}
@@ -14,6 +14,7 @@
 	{{/each}}
 </dl>
 
+<!--
 <select>
 	<option>Area Tipo 1</option>
 	<option>Area Tipo 2</option>
@@ -22,5 +23,6 @@
 
 <input type="text" value="{{title}}" placeholder="title"/>
 <textarea placeholder="description">{{desc}}</textarea>
-	<button class="btn btn-primary">Save</button>
+<button class="btn btn-primary">Save</button>
 <button class="btn">Cancel</button>
+-->

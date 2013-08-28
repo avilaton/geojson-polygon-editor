@@ -10,10 +10,13 @@ function (_, Backbone, TagModel) {
 		initialize: function () {
 		},
 
-		tagsFromData: function (data) {
+		parseFeature: function (feature) {
 			var self = this;
 			var counter = 0;
-			_.each(data, function (item, index) {
+
+			self.feature = feature;
+
+			_.each(feature.data, function (item, index) {
 				console.log(item, index);
 				self.add({
 					id: counter,
@@ -22,7 +25,20 @@ function (_, Backbone, TagModel) {
 				});
 				counter++;
 			});
+		},
+
+		storeFeature: function () {
+			var self = this,
+				result = {};
+
+			_.each(self.models, function (item, index) {
+				result[item.get('title')] = item.get('desc');
+			});
+
+			self.feature.data = result;
+			return result;
 		}
+
 	}); 
 
 	return TagsCollection;
