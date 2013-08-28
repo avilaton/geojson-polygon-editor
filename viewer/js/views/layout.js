@@ -48,6 +48,12 @@ function (_, Backbone, Handlebars, TagsCollection, MapView,
         id: "usodesuelo",
         filename: "../data/usodesuelo.geojson",
         style: "select"
+      },
+      personas: {
+        name: "Personas",
+        id: "personas",
+        filename: "../data/personas.geojson",
+        style: "select"
       }
     },
 
@@ -67,10 +73,11 @@ function (_, Backbone, Handlebars, TagsCollection, MapView,
       self.mapView.addLayer(self.layers.cpc);
       self.mapView.addLayer(self.layers.obrasprivadas);
       self.mapView.addLayer(self.layers.usodesuelo);
+      self.mapView.addLayer(self.layers.personas);
 
       this.mapView.setVisibility("obrasprivadas", true);
 
-      self.mapView.addSelectControl(["obrasprivadas","usodesuelo", "barrios"]);
+      self.mapView.addSelectControl(["obrasprivadas","usodesuelo", "personas"]);
 
       self.tags_collection = new TagsCollection();
 
