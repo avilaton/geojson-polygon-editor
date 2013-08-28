@@ -8,7 +8,7 @@ PORT = 8003
 server = BaseHTTPServer.HTTPServer
 handler = CGIHTTPServer.CGIHTTPRequestHandler
 server_address = ("", PORT)
-handler.cgi_directories = ["/cgi-bin"]
+handler.cgi_directories = ["/server"]
 print('serving to port '+str(PORT))
 httpd = server(server_address, handler)
 httpd.serve_forever()

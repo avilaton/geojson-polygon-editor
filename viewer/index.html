@@ -42,50 +42,6 @@
         </div>
     </div>
 
-    <!-- Templates -->
-    <script id="layoutTemplate" type="text/x-handlebars">
-      <div class="row-fluid">
-        <div class="span3">
-          <div class="control-group">
-            <label class="control-label"></label>
-            <legend>Capas</legend>
-            <div id="capas" class="controls">
-              <label class="checkbox">
-                <input id="barriosLayer" type="checkbox" value="barrios">
-                Barrios
-              </label>
-              <label class="checkbox">
-                <input id="distritosLayer" type="checkbox" value="distritos">
-                Distritos
-              </label>
-              <label class="checkbox">
-                <input id="cpcLayer" type="checkbox" value="cpc">
-                Zonas de Influencia CPC
-              </label>
-            </div>
-          </div>  
-          <div>
-            <legend>Datos</legend>
-            <div id='tags'></div>
-            </dl>
-          </div>
-        </div>
-        
-        <div class="span9" id="mapBox">
-            <div id="map" class="smallmap"></div>
-        </div>
-      </div>
-    </script>
-    
-    <script id="tagsTemplate" type="text/x-handlebars">
-      <dl class="dl">
-      {{#each tags}}
-        <dt>{{title}}</dt>
-        <dd>{{desc}}</dd>
-      {{/each}}
-      </dl>
-    </script>
-
     <script data-main="js/main" src="js/lib/require.js"></script>
     <!--
     <script src="http://maps.google.com/maps/api/js?v=3.6&sensor=false"></script>
