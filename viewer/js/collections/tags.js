@@ -17,7 +17,6 @@ function (_, Backbone, TagModel) {
 			self.feature = feature;
 
 			_.each(feature.data, function (item, index) {
-				console.log(item, index);
 				self.add({
 					id: counter,
 					title: index,
