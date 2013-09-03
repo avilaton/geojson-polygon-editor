@@ -22,37 +22,37 @@ function (_, Backbone, Handlebars, TagsCollection, MapView,
       barrios: {
         name: "Barrios",
         id: "barrios",
-        filename: "../data/barrios.geojson",
+        filename: "./data/barrios.geojson",
         style: "overlay"
       },
       distritos: {
         name: "Distritos", 
         id: "distritos",
-        filename: "../data/distritos.geojson",
+        filename: "./data/distritos.geojson",
         style: "overlay"
       },
       cpc: {
         name: "Zonas CPC", 
         id: "cpc",
-        filename: "../data/cpc.geojson",
+        filename: "./data/cpc.geojson",
         style: "overlay"
       },
       obrasprivadas: {
         name: "Obras Privadas",
         id: "obrasprivadas",
-        filename: "../data/obrasprivadas.geojson",
+        filename: "./data/obrasprivadas.geojson",
         style: "select"
       },
       usodesuelo: {
         name: "Uso de Suelo",
         id: "usodesuelo",
-        filename: "../data/usodesuelo.geojson",
+        filename: "./data/usodesuelo.geojson",
         style: "select"
       },
       personas: {
         name: "Personas",
         id: "personas",
-        filename: "../data/personas.geojson",
+        filename: "./data/personas.geojson",
         style: "select"
       }
     },
