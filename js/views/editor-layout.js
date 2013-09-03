@@ -5,7 +5,7 @@ define([
   "collections/tags",
   "views/map",
   "views/tags",
-  "text!../../templates/viewer-layout.handlebars"
+  "text!../../templates/editor-layout.handlebars"
   ],
 function (_, Backbone, Handlebars, TagsCollection, MapView, 
   TagsView, ViewLayoutTemplate) {
@@ -22,7 +22,7 @@ function (_, Backbone, Handlebars, TagsCollection, MapView,
       barrios: {
         name: "Barrios",
         id: "barrios",
-        filename: "../data/barrios.json",
+        filename: "../data/barrios.geojson",
         style: "overlay"
       },
       distritos: {

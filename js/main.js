@@ -19,7 +19,7 @@ require.config({
 });
 
 require([
-    "views/layout"
+    "views/viewer-layout"
 ], function (LayoutView) {
     'use strict';
 
