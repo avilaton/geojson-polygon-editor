@@ -23,14 +23,18 @@ class storage(object):
 
 		self.jsonPrint({"files": result})
 
-	def get(self):
-		return
+	def get(self, filename):
+		with open(self.dir + filename) as f:
+			content = json.loads(f.read())
+		self.jsonPrint(content)
 
-	def save(self):
+	def save(self, filename):
+		with open(self.dir + filename) as f:
+			content = json.loads(f.read())
 		return
 
 def main():
-	dataStore = storage("./data")
+	dataStore = storage("./data/")
 
 	form = cgi.FieldStorage()
 	action = form.getvalue('action')
@@ -38,6 +42,8 @@ def main():
 		dataStore.ls(".json")
 
 	elif action == 'get':
+		filename = form.getvalue('filename')
+		dataStore.get(filename)
 		pass
 	elif action == 'save':
 		jsonPrint("file saved")
