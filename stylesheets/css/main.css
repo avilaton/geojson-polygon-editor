@@ -21,3 +21,10 @@ dt {
     padding:1px 5px 1px;
 }
 
+dt {
+    background: #f1f1f1;
+}
+
+dt > a.remove-tag, dt > a.edit-tag {
+    float:right;
+}
