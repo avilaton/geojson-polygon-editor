@@ -22,7 +22,7 @@ function (_, Backbone, Handlebars, TagsCollection, MapView,
       barrios: {
         name: "Barrios",
         id: "barrios",
-        filename: "./data/barrios.geojson",
+        filename: "data/barrios.geojson",
         style: "overlay"
       },
       distritos: {
