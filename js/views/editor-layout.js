@@ -2,13 +2,15 @@ define([
   "underscore",
   "backbone",
   "handlebars",
+  "models/storage",
   "collections/tags",
   "views/map",
   "views/tags",
   "text!../../templates/editor-layout.handlebars"
   ],
-function (_, Backbone, Handlebars, TagsCollection, MapView, 
-  TagsView, ViewLayoutTemplate) {
+function (_, Backbone, Handlebars, 
+  Storage, TagsCollection, 
+  MapView, TagsView, ViewLayoutTemplate) {
 
   var View = Backbone.View.extend({
     el: $("#layout"),
@@ -67,6 +69,12 @@ function (_, Backbone, Handlebars, TagsCollection, MapView,
       self.mapView = new MapView();
 
       self.mapView.panAndZoom();
+
+      var files = new Storage('./data');
+      files.list().done(function (result) {
+        console.log("just got your files: ", result);
+      });
+      files.get('cpc.geojson');
 
       self.mapView.addLayer(self.layers.barrios);
       self.mapView.addLayer(self.layers.distritos);

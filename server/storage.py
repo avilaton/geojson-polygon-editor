@@ -45,7 +45,7 @@ def server_files(filepath):
 @route('/data')
 @route('/data/')
 def files():
-  return dataStore.ls(".json")
+  return {"items": dataStore.ls(".json")}
 
 
 

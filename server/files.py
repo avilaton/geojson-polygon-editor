@@ -15,8 +15,7 @@ class storage(object):
 			filename, extension = os.path.splitext(f)
 			if extension.endswith(".geojson"):
 				result.append(f)
-
-		return {"files": result}
+		return result
 
 	def get(self, filename):
 		with open(self.dir + filename) as f:
