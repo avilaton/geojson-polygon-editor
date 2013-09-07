@@ -4,9 +4,11 @@
       <label class="control-label"></label>
       <legend>Layers</legend>
       <div id="capas" class="controls">
-        <select id="layer">
-          <option>Layer 1</option>
-          <option>Layer 2</option>
+        <select class="layer">
+          <option value="">Select a layer</option>
+          {{#each layers}}
+            <option value="{{filename}}">{{filename}}</option>
+          {{/each}}
         </select>
       </div>
       <div id="capas" class="controls">
@@ -18,11 +20,11 @@
     <div>
       <legend>Polygon Data</legend>
       <div id='tags'></div>
-      </dl>
-    </div>
+    </dl>
   </div>
-  
-  <div class="span9" id="mapBox">
-      <div id="map" class="smallmap"></div>
-  </div>
+</div>
+
+<div class="span9" id="mapBox">
+  <div id="map" class="smallmap"></div>
+</div>
 </div>
