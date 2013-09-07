@@ -15,6 +15,7 @@ function (_, Backbone, Handlebars, TagsCollection, MapView,
     events: {
       "click .checkbox": "onClickBarrios",
       "change input[name=capasOption]": "onClickRadio",
+      "change select.layer": "onChangeSelectedLayer",
       "featureselected": "rendertags",
       "click .btn.save-layer": "saveLayer"
     },
@@ -92,7 +93,7 @@ function (_, Backbone, Handlebars, TagsCollection, MapView,
     },
 
     render: function () {
-      this.$el.html(this.template(this.model));
+      this.$el.html(this.template(this));
     },
 
     mapEvent: function (event) {
@@ -124,6 +125,22 @@ function (_, Backbone, Handlebars, TagsCollection, MapView,
 
       this.mapView.setVisibility(event.currentTarget.value, true);
       // this.mapView.setSelectable(event.currentTarget.value);
+    },
+
+    onChangeSelectedLayer: function (event) {
+      console.log('event', event);
+      var target = event.currentTarget;
+      console.log("selected option: ", target.value);
+      var allOptions = $(target).find('option');
+      console.log(allOptions);
+      for (var i = allOptions.length - 1; i >= 0; i--) {
+        if (allOptions[i].value) {
+          this.mapView.setVisibility(allOptions[i].value, false)
+        };
+      };
+      if (target.value) {
+        this.mapView.setVisibility(target.value, true);   
+      };
     },
 
     export: function () {

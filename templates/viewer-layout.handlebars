@@ -3,6 +3,7 @@
     <div class="control-group">
       <label class="control-label"></label>
       <legend>Layers</legend>
+      <!--
       <div id="capas" class="controls">
         <label class="radio" for="capasOption1">
           <input type="radio" name="capasOption" id="capasOption1" value="obrasprivadas" checked>
@@ -26,6 +27,18 @@
           <input id="cpcLayer" type="checkbox" value="cpc">
           Zonas de Influencia CPC
         </label>
+      </div>
+      -->
+      <div class="controls">
+        <select class="layer">
+            <option value="">Select a layer</option>
+          {{#each layers}}
+            <option value="{{id}}">{{name}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="controls">
+        <button class="btn btn-primary btn-small">Download Layer</button>
       </div>
     </div>  
     <div>
