@@ -36,10 +36,7 @@ define([
 
         self.tags_collection = new TagsCollection();
 
-        vent.on("featureselected",function (event) {
-          self.mapEvent(event);
-        });
-
+        self.layers.selected.on("featureselected", self.mapEvent, self);
         // self.layers.selected.on("change", )
       },
 
@@ -60,7 +57,7 @@ define([
 
         self.mapView.panAndZoom();
 
-        this.mapView.setVisibility("obrasprivadas.geojson", true);
+        // this.mapView.setVisibility("obrasprivadas.geojson", true);
 
         self.mapView.addSelectControl(["obrasprivadas.geojson","usodesuelo.geojson", "personas.geojson"]);
       },
@@ -75,28 +72,16 @@ define([
         };
       },
 
-      // setCurrent: function (layerId) {
-      //   var self = this;
-
-      //   _.each(self.layers.models, function (model) {
-      //     self.mapView.setVisibility(model.attributes.filename, false)
-      //   });
-
-      //   this.mapView.setVisibility(layerId, true);
-      // },
-
       onChangeLayer: function (event) {
         var $target = $(event.currentTarget);
 
         this.layers.select($target.val());
-
-        // this.setCurrent($target.val());
       },
 
       saveLayer: function () {
         var layerId = this.layers.selected.get("filename");
         var geojson = this.mapView.getLayerGeoJSON(layerId);
-        // console.log("save layer with content:", geojson);
+
         this.layers.selected.save(geojson);
       },
 

@@ -120,6 +120,8 @@ define(["OpenLayers",
       setCurrent: function (selectedLayer) {
         var self = this;
 
+        this.selectedLayer = selectedLayer;
+
         _.each(self.collection.models, function (model) {
           self.setVisibility(model.attributes.filename, false)
         });
@@ -127,19 +129,12 @@ define(["OpenLayers",
         this.setVisibility(selectedLayer.get("filename"), true);
       },
 
-      toJSON: function (features) {
-        var result = this.format.write(features);
-        console.log("feature to json", result);
-        $('#result').text(result);
-        return result;
-      },
-
       getLayerGeoJSON: function (layerId) {
         var features = this.map.getLayer(layerId).features;
         var GeoJSONString = this.format.write(features);
         var GeoJSONObject;
 
-        console.log(features);
+        // console.log(features);
         
         if (features[0]) {
           GeoJSONObject = JSON.parse(GeoJSONString);
@@ -151,9 +146,8 @@ define(["OpenLayers",
       },
 
       selectedFeature: function (event) {
-        console.log(event.feature);
-        
-        App.vent.trigger("featureselected", event);
+        this.selectedLayer.set("selected", event.feature);
+        this.selectedLayer.trigger("featureselected", event);
       }
 
     }); 
