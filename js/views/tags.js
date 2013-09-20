@@ -8,7 +8,7 @@ function (_, Backbone, Handlebars, TagsListTemplate) {
 
   var TagsView = Backbone.View.extend({
     
-    el:$("#tags"),
+    // el: $("#tags"),
 
     template: Handlebars.compile(TagsListTemplate),
 
@@ -20,7 +20,7 @@ function (_, Backbone, Handlebars, TagsListTemplate) {
     },
 
     initialize: function(model){ 
-      
+
       this.listenTo(this.collection, "add", this.render);
       this.listenTo(this.collection, "remove", this.render);
       this.listenTo(this.collection, "reset", this.render);
@@ -29,7 +29,7 @@ function (_, Backbone, Handlebars, TagsListTemplate) {
 
     render: function () {
       var self = this;
-      
+
       this.$el.html(this.template({
           tags: self.collection.toJSON()
         }) 
@@ -52,6 +52,7 @@ function (_, Backbone, Handlebars, TagsListTemplate) {
 
       // this code should be moved to the collection id handling
       var newId = this.collection.max(function (model) {
+        console.log(model);
         return model.get("id");
       }).get("id")+1;
       this.collection.add({title:"...", desc: "...", id: newId});
@@ -60,6 +61,8 @@ function (_, Backbone, Handlebars, TagsListTemplate) {
     saveTag: function (event) {
       var $target = $(event.currentTarget);
       var model = this.collection.get($target.data("id"));
+      console.log("saveTag:", model);
+
       if ($target.hasClass("key")) {
         model.set({title: $target.text()});
       } else if ($target.hasClass("value")){

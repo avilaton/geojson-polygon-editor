@@ -26,6 +26,7 @@ function (_, Backbone) {
 			return $.ajax( {
 	            type: 'GET',
 	            dataType: 'json',
+				contentType: 'application/json',
 	            url: self.directory + '/' + filename,
 	            success: function( result ) {
 	                console.log(result);

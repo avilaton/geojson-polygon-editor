@@ -10,17 +10,20 @@ define([
   ],
   function (_, Backbone, Handlebars, 
     TagsCollection, LayersCollection, 
-    MapView, TagsView, ViewLayoutTemplate) {
+    MapView, TagsView, tmpl) {
 
     var View = Backbone.View.extend({
+      
       el: $("#layout"),
+
       events: {
         "change select.layer": "onChangeLayer",
         "featureselected": "rendertags",
-        "click .btn.save-layer": "saveLayer"
+        "click .btn.save-layer": "saveLayer",
+        "click .btn.export-layer": "exportLayer"
       },
 
-      template: Handlebars.compile(ViewLayoutTemplate),
+      template: Handlebars.compile(tmpl),
 
       initialize: function(vent) {
         var self = this;
@@ -33,14 +36,11 @@ define([
 
         self.tags_collection = new TagsCollection();
 
-        self.tags_view = new TagsView({
-          el: $("#tags"),
-          collection: self.tags_collection
-        });
-
         vent.on("featureselected",function (event) {
           self.mapEvent(event);
         });
+
+        // self.layers.selected.on("change", )
       },
 
       render: function () {
@@ -48,6 +48,11 @@ define([
         var layers = self.layers.toJSON();
         
         this.$el.html(this.template({layers: layers}));
+
+        self.tags_view = new TagsView({
+          el: $('#tags'),
+          collection: self.tags_collection
+        });
 
         self.mapView = new MapView({
           collection: self.layers
@@ -81,17 +86,27 @@ define([
       },
 
       onChangeLayer: function (event) {
-        var target = event.currentTarget;
+        var $target = $(event.currentTarget);
 
-        this.setCurrent($(event.currentTarget).val());
+        this.layers.select($target.val());
+
+        this.setCurrent($target.val());
       },
 
       export: function () {
-        var layerId = $('#layerId').val();
-        console.log(layerId);
-        this.mapView.toJSON(layerId);
-      }
+      },
 
+      saveLayer: function () {
+        var layerId = this.layers.selected.get("filename");
+        var geojson = this.mapView.getLayerGeoJSON(layerId);
+        console.log(geojson);
+        this.layers.selected.save(geojson);
+      },
+
+      exportLayer: function (event) {
+        console.log(event);
+
+      }
     }); 
 
 return View;

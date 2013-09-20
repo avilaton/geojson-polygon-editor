@@ -131,10 +131,27 @@ define(["OpenLayers",
         var result = this.format.write(features);
         console.log("feature to json", result);
         $('#result').text(result);
-        // this.trigger("featureselected");
+        return result;
+      },
+
+      getLayerGeoJSON: function (layerId) {
+        var features = this.map.getLayer(layerId).features;
+        var GeoJSONString = this.format.write(features);
+        var GeoJSONObject;
+
+        console.log(features);
+        
+        if (features[0]) {
+          GeoJSONObject = JSON.parse(GeoJSONString);
+          GeoJSONObject.crs = this.format.createCRSObject(features[0]);
+        };
+        
+        GeoJSONString = JSON.stringify(GeoJSONObject);
+        return GeoJSONString;
       },
 
       selectedFeature: function (event) {
+        console.log(event.feature);
         App.vent.trigger("featureselected", event);
       }
 

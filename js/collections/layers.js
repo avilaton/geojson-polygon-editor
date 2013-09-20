@@ -10,6 +10,7 @@ define([
 
       initialize: function () {
         this.storage = new Storage('./data');
+        this.selected = new this.model;
       },
 
       fetch: function (layerId) {
@@ -21,6 +22,17 @@ define([
         });
 
         return request;
+      },
+
+      select: function (layerId) {
+        var self = this;
+
+        var newSelected = _.find(self.models, function (model) {
+          return model.get("filename") == layerId;
+        });
+        console.log(newSelected);
+        this.selected.set(newSelected.attributes);
+
       }
 
     }); 

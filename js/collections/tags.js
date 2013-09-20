@@ -16,7 +16,7 @@ define([
 
 				self.feature = feature;
 
-				_.each(feature.data, function (item, index) {
+				_.each(feature.attributes, function (item, index) {
 					self.add({
 						id: counter,
 						title: index,
@@ -34,7 +34,7 @@ define([
 					result[item.get('title')] = item.get('desc');
 				});
 
-				self.feature.data = result;
+				self.feature.attributes = result;
 				return result;
 			}
 
