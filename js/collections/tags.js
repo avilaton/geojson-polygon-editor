@@ -35,6 +35,7 @@ define([
         });
 
         self.feature.attributes = result;
+        self.trigger("updated", self);
         return result;
       },
 

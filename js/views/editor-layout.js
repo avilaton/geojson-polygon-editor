@@ -18,7 +18,6 @@ define([
 
       events: {
         "change select.layer": "onChangeLayer",
-        "featureselected": "rendertags",
         "click .btn.save-layer": "saveLayer",
         "click .btn.export-layer": "exportLayer"
       },
@@ -29,14 +28,18 @@ define([
         var self = this;
 
         self.layers = new LayersCollection();
+        self.tags_collection = new TagsCollection();
 
         self.layers.fetch().done(function () {
           self.render();
+          self.attachSubViews();
         });
 
-        self.tags_collection = new TagsCollection();
 
         self.layers.selected.on("featureEvent", self.featureEvent, self);
+
+        self.tags_collection.on("updated", self.setUpdatedFlag, self);
+
       },
 
       render: function () {
@@ -44,6 +47,10 @@ define([
         var layers = self.layers.toJSON();
         
         this.$el.html(this.template({layers: layers}));
+      },
+
+      attachSubViews: function () {
+        var self = this;
 
         self.tags_view = new TagsView({
           el: $('#tags'),
@@ -59,6 +66,10 @@ define([
         // this.mapView.setVisibility("obrasprivadas.geojson", true);
 
         self.mapView.addSelectControl(["obrasprivadas.geojson","usodesuelo.geojson", "personas.geojson"]);
+      },
+
+      setUpdatedFlag: function (event) {
+        this.layers.selected.set("updated", true);
       },
 
       featureEvent: function (event) {
