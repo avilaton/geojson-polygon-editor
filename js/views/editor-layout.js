@@ -75,37 +75,33 @@ define([
         };
       },
 
-      setCurrent: function (layerId) {
-        var self = this;
+      // setCurrent: function (layerId) {
+      //   var self = this;
 
-        _.each(self.layers.models, function (model) {
-          self.mapView.setVisibility(model.attributes.filename, false)
-        });
+      //   _.each(self.layers.models, function (model) {
+      //     self.mapView.setVisibility(model.attributes.filename, false)
+      //   });
 
-        this.mapView.setVisibility(layerId, true);
-      },
+      //   this.mapView.setVisibility(layerId, true);
+      // },
 
       onChangeLayer: function (event) {
         var $target = $(event.currentTarget);
 
         this.layers.select($target.val());
 
-        this.setCurrent($target.val());
-      },
-
-      export: function () {
+        // this.setCurrent($target.val());
       },
 
       saveLayer: function () {
         var layerId = this.layers.selected.get("filename");
         var geojson = this.mapView.getLayerGeoJSON(layerId);
-        console.log(geojson);
+        // console.log("save layer with content:", geojson);
         this.layers.selected.save(geojson);
       },
 
       exportLayer: function (event) {
         console.log(event);
-
       }
     }); 
 

@@ -30,8 +30,8 @@ define([
         var newSelected = _.find(self.models, function (model) {
           return model.get("filename") == layerId;
         });
-        console.log(newSelected);
-        this.selected.set(newSelected.attributes);
+
+        self.selected.set(newSelected.attributes);
 
       }
 

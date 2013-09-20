@@ -52,7 +52,6 @@ function (_, Backbone, Handlebars, TagsListTemplate) {
 
       // this code should be moved to the collection id handling
       var newId = this.collection.max(function (model) {
-        console.log(model);
         return model.get("id");
       }).get("id")+1;
       this.collection.add({title:"...", desc: "...", id: newId});
