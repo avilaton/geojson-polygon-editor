@@ -5,21 +5,15 @@
 			<a href="#" class="remove-tag" data-id="{{id}}">
 				<i class="icon-trash"></i>
 			</a>
-		<!--
-			<a href="#" class="edit-tag" data-id="{{id}}">
-				<i class="icon-pencil"></i>
-			</a>
-		-->
-			<div class="editable key" data-id="{{id}}" contenteditable="true">{{this.title}}</div>
+			<div class="editable key" data-id="{{id}}" contenteditable="true">{{this.key}}</div>
 		</dt>
 		<dd>
-			<div class="editable value" data-id="{{id}}" contenteditable="true">{{this.desc}}</div>
+			<div class="editable value" data-id="{{id}}" contenteditable="true">{{this.value}}</div>
 		</dd>
 	{{/each}}
+</dl>
 
-<a href="#" class="edit-add" data-id="{{id}}">
-			<i class="icon-plus"></i>
-</a>
+<a href="#" class="new-tag"><i class="icon-plus"></i></a>
 {{#if tags}}
 {{else}}
 	<p>Click a polygon to see and edit it's data</p>

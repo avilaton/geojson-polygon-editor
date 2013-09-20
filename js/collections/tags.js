@@ -1,44 +1,50 @@
 define([
-	"underscore",
-	"backbone",
-	"models/tag"],
-	function (_, Backbone, TagModel) {
+  "underscore",
+  "backbone",
+  "models/tag"],
+  function (_, Backbone, TagModel) {
 
-		var TagsCollection = Backbone.Collection.extend({
-			model: TagModel,
-			
-			initialize: function () {
-			},
+    var TagsCollection = Backbone.Collection.extend({
+      model: TagModel,
+      
+      initialize: function () {
+      },
 
-			parseFeature: function (feature) {
-				var self = this;
-				var counter = 0;
+      parseFeature: function (feature) {
+        var self = this;
+        var counter = 0;
 
-				self.feature = feature;
+        self.feature = feature;
 
-				_.each(feature.attributes, function (item, index) {
-					self.add({
-						id: counter,
-						title: index,
-						desc: item
-					});
-					counter++;
-				});
-			},
+        _.each(feature.attributes, function (item, index) {
+          self.add({
+            id: counter,
+            key: index,
+            value: item
+          });
+          counter++;
+        });
+      },
 
-			storeFeature: function () {
-				var self = this,
-				result = {};
+      storeFeature: function () {
+        var self = this,
+        result = {};
 
-				_.each(self.models, function (item, index) {
-					result[item.get('title')] = item.get('desc');
-				});
+        _.each(self.models, function (item, index) {
+          result[item.get('key')] = item.get('value');
+        });
 
-				self.feature.attributes = result;
-				return result;
-			}
+        self.feature.attributes = result;
+        return result;
+      },
 
-		}); 
+      newTag: function () {
+        var self = this;
 
-		return TagsCollection;
-	});
+        this.add({key:"", value: "", id: self.length+1});
+      }
+
+    }); 
+
+    return TagsCollection;
+  });

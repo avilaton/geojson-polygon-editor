@@ -36,8 +36,7 @@ define([
 
         self.tags_collection = new TagsCollection();
 
-        self.layers.selected.on("featureselected", self.mapEvent, self);
-        // self.layers.selected.on("change", )
+        self.layers.selected.on("featureEvent", self.featureEvent, self);
       },
 
       render: function () {
@@ -62,7 +61,7 @@ define([
         self.mapView.addSelectControl(["obrasprivadas.geojson","usodesuelo.geojson", "personas.geojson"]);
       },
 
-      mapEvent: function (event) {
+      featureEvent: function (event) {
         var self = this;
 
         if (event.type == "featureselected") {

@@ -147,7 +147,7 @@ define(["OpenLayers",
 
       selectedFeature: function (event) {
         this.selectedLayer.set("selected", event.feature);
-        this.selectedLayer.trigger("featureselected", event);
+        this.selectedLayer.trigger("featureEvent", event);
       }
 
     }); 
