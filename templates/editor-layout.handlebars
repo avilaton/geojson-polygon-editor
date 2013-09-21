@@ -7,14 +7,16 @@
         <select class="layer">
           <option value="">Select a layer</option>
           {{#each layers}}
-            <option value="{{filename}}">{{filename}} ({{updated}})</option>
+            <option value="{{filename}}">{{filename}}</option>
           {{/each}}
         </select>
       </div>
       <div id="capas" class="controls">
+        <button class="btn new-layer">New</button>
         <button class="btn btn-primary save-layer">Save</button>
-        <button class="btn export-layer">Export</button>
+        <!-- <button class="btn export-layer">Export</button> -->
       </div>
+      <span>{{layers.selected.filename}}</span>
     </div>  
     <div>
       <legend>Polygon Data</legend>
