@@ -3,7 +3,7 @@ define([
 	"backbone"],
 function (_, Backbone) {
 
-	var TagsModel = Backbone.Model.extend({}); 
+	var Model = Backbone.Model.extend({}); 
 
-	return TagsModel;
+	return Model;
 });

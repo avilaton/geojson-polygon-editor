@@ -22,10 +22,10 @@ class storage(object):
 			content = json.loads(f.read())
 		return content
 
-	def save(self, filename, body):
-		with open(self.dir + filename) as f:
-			content = json.loads(body)
-			f.write(content)
+	def save(self, filename, content):
+		with open(self.dir + filename, 'w') as f:
+			body = json.dumps(content, indent=4)
+			f.write(body)
 		return True
 
 def main():

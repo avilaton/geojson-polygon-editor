@@ -17,14 +17,12 @@ define(["OpenLayers",
           $("#mapBox").height(bodyheight-80);
           setTimeout( function() { self.map.updateSize();}, 100);
         });
-        
-        var layerSwitcherControl = new OpenLayers.Control.LayerSwitcher({'ascending':false});
 
         this.map = new OpenLayers.Map('map', {
           controls : [
             new OpenLayers.Control.Navigation(),
             new OpenLayers.Control.PanZoomBar(),
-            layerSwitcherControl,
+            new OpenLayers.Control.LayerSwitcher({'ascending':false}),
             new OpenLayers.Control.ScaleLine(),
             new OpenLayers.Control.MousePosition({
               displayProjection: new OpenLayers.Projection("EPSG:4326")
@@ -45,6 +43,8 @@ define(["OpenLayers",
         _.each(self.collection.models, function (model) {
           self.addLayer(model.attributes);
         });
+
+        this.collection.selected.on("change", self.setCurrent, self);
 
       },
 
@@ -117,25 +117,37 @@ define(["OpenLayers",
         control.setLayer(layer);
       },
 
-      setCurrent: function (layerId) {
+      setCurrent: function (selectedLayer) {
         var self = this;
 
-        _.each(self.layers.models, function (model) {
-          self.mapView.setVisibility(model.attributes.filename, false)
+        this.selectedLayer = selectedLayer;
+
+        _.each(self.collection.models, function (model) {
+          self.setVisibility(model.attributes.filename, false)
         });
 
-        this.mapView.setVisibility(layerId, true);
+        this.setVisibility(selectedLayer.get("filename"), true);
       },
 
-      toJSON: function (features) {
-        var result = this.format.write(features);
-        console.log("feature to json", result);
-        $('#result').text(result);
-        // this.trigger("featureselected");
+      getLayerGeoJSON: function (layerId) {
+        var features = this.map.getLayer(layerId).features;
+        var GeoJSONString = this.format.write(features);
+        var GeoJSONObject;
+
+        // console.log(features);
+        
+        if (features[0]) {
+          GeoJSONObject = JSON.parse(GeoJSONString);
+          GeoJSONObject.crs = this.format.createCRSObject(features[0]);
+        };
+        
+        GeoJSONString = JSON.stringify(GeoJSONObject);
+        return GeoJSONString;
       },
 
       selectedFeature: function (event) {
-        App.vent.trigger("featureselected", event);
+        this.selectedLayer.set("selected", event.feature);
+        this.selectedLayer.trigger("featureEvent", event);
       }
 
     }); 

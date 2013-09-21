@@ -10,9 +10,6 @@ body {
     height:98%;
     width:100%;
 }
-dt {
-    text-transform: capitalize;
-}
 #footer .navbar-inner{
     min-height:15px;
 }
@@ -21,10 +18,24 @@ dt {
     padding:1px 5px 1px;
 }
 
+
+/* Description lists */
+dt {
+    /* text-transform: capitalize; */
+}
+
+dt, dd {
+    line-height: 2em;
+}
+
 dt {
     background: #f1f1f1;
 }
 
-dt > a.remove-tag, dt > a.edit-tag {
+dd {
+    background: #f9f9f9;
+}
+
+dt > a.remove-tag {
     float:right;
 }

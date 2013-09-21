@@ -48,6 +48,11 @@ def files():
   items = [{"filename":filename} for filename in dataStore.ls(".json")]
   return {"items": items}
 
+@put('/data/<filepath:path>')
+def updateFile(filepath):
+  content = request.json
+  dataStore.save(filepath, content)
+  return 
 
 
 @route('/api/stop/<stop_id>')
