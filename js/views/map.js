@@ -89,6 +89,12 @@ define(["OpenLayers",
         control.activate();
       },
 
+      addEditingCToolbar: function (layerId) {
+        var layer = this.map.getLayer(layerId);
+        var control = new OpenLayers.Control.EditingToolbar(layer);
+        this.map.addControl(control);
+      },
+
       addControlPanel: function () {
         var layers = this.map.getLayersByClass('OpenLayers.Layer.GML');
         console.log(layers);

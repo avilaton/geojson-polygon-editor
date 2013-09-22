@@ -13,7 +13,7 @@ define([
     MapView, TagsView, tmpl) {
 
     var View = Backbone.View.extend({
-      
+
       el: $("#layout"),
 
       events: {
@@ -66,7 +66,8 @@ define([
         // this.mapView.setVisibility("obrasprivadas.geojson", true);
 
         self.mapView.addSelectControl();
-        // self.mapView.addControlPanel();
+        //self.mapView.addControlPanel();
+        // self.mapView.addEditingToolbar("cpc.geojson");
       },
 
       setUpdatedFlag: function (event) {
