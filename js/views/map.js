@@ -31,6 +31,8 @@ define(["OpenLayers",
           ]
         });
 
+        window.map = this.map;
+
         this.baselayer = new OpenLayers.Layer.OSM('OSM Map');
 
         this.map.addLayer(this.baselayer);
@@ -41,7 +43,7 @@ define(["OpenLayers",
         });
 
         _.each(self.collection.models, function (model) {
-          self.addLayer(model.attributes);
+          model.set("layer", self.addLayer(model.attributes));
         });
 
         this.collection.selected.on("change", self.setCurrent, self);
@@ -61,7 +63,7 @@ define(["OpenLayers",
           );
       },
 
-      addSelectControl: function (layerIds) {
+      addSelectControl: function () {
         var self = this,
         layers = [],
         control;
@@ -69,12 +71,6 @@ define(["OpenLayers",
         _.each(self.collection.models, function (layerModel) {
           var layer = self.map.getLayer(layerModel.attributes.filename);
           layers.push(layer);
-          layer.events.on({
-            "featureselected": self.selectedFeature,
-            "featureunselected": self.selectedFeature, 
-            scope: self
-          });
-          layer.events.fallThrough = true;
         });
 
         control = new OpenLayers.Control.SelectFeature(
@@ -93,7 +89,43 @@ define(["OpenLayers",
         control.activate();
       },
 
+      addControlPanel: function () {
+        var layers = this.map.getLayersByClass('OpenLayers.Layer.GML');
+        console.log(layers);
+        var selected = layers[0];
+
+        var controls = {
+          poly : new OpenLayers.Control.DrawFeature(selected,
+            OpenLayers.Handler.Polygon),
+          modify: new OpenLayers.Control.ModifyFeature(selected),
+          select: new OpenLayers.Control.SelectFeature(selected,
+            {
+              clickout: true, 
+              toggle: true,
+              multiple: false, 
+              hover: false
+            }),
+          snap: new OpenLayers.Control.Snapping({
+            layer: selected,
+            targets: [selected],
+            greedy: false
+          })
+        };
+
+        controls.snap.activate();
+        // var container = document.getElementById("panel");
+        
+        var panel = new OpenLayers.Control.Panel({
+          // div: container,
+          defaultControl:controls.select
+        });
+
+        panel.addControls([controls.poly,controls.modify,controls.select]);
+        this.map.addControl(panel);
+      },
+
       addLayer: function (spec) {
+        var self = this;
         var layer;
 
         layer = new OpenLayers.Layer.GML(spec.filename, "./data/" + spec.filename, {
@@ -104,6 +136,15 @@ define(["OpenLayers",
         layer.id = spec.filename;
 
         this.map.addLayer(layer);
+
+        layer.events.on({
+          "featureselected": self.selectedFeature,
+          "featureunselected": self.selectedFeature, 
+          scope: self
+        });
+        layer.events.fallThrough = true;
+
+        return layer;
       },
 
       setVisibility: function (layerId,visibility) {

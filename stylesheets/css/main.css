@@ -39,3 +39,42 @@ dd {
 dt > a.remove-tag {
     float:right;
 }
+
+
+
+/*
+Estilos para el panel de edición 
+*/
+.olControlPanel { 
+    position:absolute;
+    top:0px;
+    right:0px;
+    width:  105px;
+    height: 32px;
+    background:rgba(255,255,255,0.6);;
+}
+.olControlPanel div {
+    float:right;
+    width:  24px;
+    height: 22px;
+    margin:5px;
+    /*background-color:white;*/
+}
+.olControlPanel .olControlModifyFeatureItemActive { 
+  background-image: url("img/draw_polygon_on.png");
+}
+.olControlPanel .olControlModifyFeatureItemInactive { 
+  background-image: url("img/draw_polygon_off.png");
+}
+.olControlPanel .olControlSelectFeatureItemActive { 
+  background-image: url("img/pan_on.png");
+}
+.olControlPanel .olControlSelectFeatureItemInactive { 
+  background-image: url("img/pan_off.png");
+}
+.olControlPanel .olControlDrawFeatureItemActive { 
+  background-image: url("img/draw_point_on.png");
+}
+.olControlPanel .olControlDrawFeatureItemInactive { 
+  background-image: url("img/draw_point_off.png");
+}

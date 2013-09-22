@@ -65,7 +65,8 @@ define([
 
         // this.mapView.setVisibility("obrasprivadas.geojson", true);
 
-        self.mapView.addSelectControl(["obrasprivadas.geojson","usodesuelo.geojson", "personas.geojson"]);
+        self.mapView.addSelectControl();
+        // self.mapView.addControlPanel();
       },
 
       setUpdatedFlag: function (event) {
