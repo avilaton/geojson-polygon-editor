@@ -42,11 +42,12 @@ define(["OpenLayers",
           'externalProjection': new OpenLayers.Projection("EPSG:4326")
         });
 
-        _.each(self.collection.models, function (model) {
-          model.set("layer", self.addLayer(model.attributes));
-        });
+        this.addVectorLayer(self.model);
 
-        this.collection.selected.on("change", self.setCurrent, self);
+        // this.addSelectControl().activate();
+        this.addEditingControls();
+
+        this.model.on("change:filename", self.setCurrent, self);
 
       },
 
@@ -65,115 +66,91 @@ define(["OpenLayers",
 
       addSelectControl: function () {
         var self = this,
-        layers = [],
-        control;
+          control;
 
-        _.each(self.collection.models, function (layerModel) {
-          var layer = self.map.getLayer(layerModel.attributes.filename);
-          layers.push(layer);
+        this.selectControl = new OpenLayers.Control.SelectFeature(self.vectorLayer, {
+          clickout: true, toggle: true,
+          multiple: false, hover: false
         });
 
-        control = new OpenLayers.Control.SelectFeature(
-          layers,
-          {
-            clickout: true, toggle: true,
-            multiple: false, hover: false
-          }
-          );
-        control.id = "selectControl";
+        this.selectControl.handlers['feature'].stopDown = false;
+        this.selectControl.handlers['feature'].stopUp = false;
 
-        control.handlers['feature'].stopDown = false;
-        control.handlers['feature'].stopUp = false;
+        this.map.addControl(self.selectControl);
 
-        self.map.addControl(control);
-        control.activate();
+        return this.selectControl;
       },
 
-      addEditingCToolbar: function (layerId) {
+      addEditingToolbar: function (layerId) {
         var layer = this.map.getLayer(layerId);
         var control = new OpenLayers.Control.EditingToolbar(layer);
         this.map.addControl(control);
       },
 
-      addControlPanel: function () {
-        var layers = this.map.getLayersByClass('OpenLayers.Layer.GML');
-        console.log(layers);
-        var selected = layers[0];
+      addEditingControls: function () {
+        var self = this;
 
-        var controls = {
-          poly : new OpenLayers.Control.DrawFeature(selected,
+        this.editingCtl = {
+          poly : new OpenLayers.Control.DrawFeature(self.vectorLayer,
             OpenLayers.Handler.Polygon),
-          modify: new OpenLayers.Control.ModifyFeature(selected),
-          select: new OpenLayers.Control.SelectFeature(selected,
-            {
-              clickout: true, 
-              toggle: true,
-              multiple: false, 
-              hover: false
-            }),
+          modify: new OpenLayers.Control.ModifyFeature(self.vectorLayer),
+          select: new OpenLayers.Control.SelectFeature(self.vectorLayer, {
+            clickout: true, 
+            toggle: true,
+            multiple: false, 
+            hover: false
+          }),
           snap: new OpenLayers.Control.Snapping({
-            layer: selected,
-            targets: [selected],
+            layer: self.vectorLayer,
+            targets: [self.vectorLayer],
             greedy: false
           })
         };
 
-        controls.snap.activate();
-        // var container = document.getElementById("panel");
+        this.editingCtl.snap.activate();
+
+        this.editingCtl.select.handlers['feature'].stopDown = false;
+        this.editingCtl.select.handlers['feature'].stopUp = false;
         
         var panel = new OpenLayers.Control.Panel({
-          // div: container,
-          defaultControl:controls.select
+          defaultControl:self.editingCtl.select
         });
 
-        panel.addControls([controls.poly,controls.modify,controls.select]);
+        panel.addControls([
+          self.editingCtl.poly,
+          self.editingCtl.modify,
+          self.editingCtl.select
+        ]);
         this.map.addControl(panel);
       },
 
-      addLayer: function (spec) {
+      addVectorLayer: function (model) {
         var self = this;
-        var layer;
+        var filename = model.get("filename");
 
-        layer = new OpenLayers.Layer.GML(spec.filename, "./data/" + spec.filename, {
-          format: OpenLayers.Format.GeoJSON,
-          styleMap: Styles["select"],
-          visibility: false
+        this.vectorLayer = new OpenLayers.Layer.GML(
+          "Vector Layer",
+          "./data/" + filename,
+          {
+            format: OpenLayers.Format.GeoJSON,
+            styleMap: Styles["select"],
+            visibility: true
         });
-        layer.id = spec.filename;
 
-        this.map.addLayer(layer);
+        this.map.addLayer(self.vectorLayer);
 
-        layer.events.on({
+        this.vectorLayer.events.on({
           "featureselected": self.selectedFeature,
           "featureunselected": self.selectedFeature, 
           scope: self
         });
-        layer.events.fallThrough = true;
-
-        return layer;
-      },
-
-      setVisibility: function (layerId,visibility) {
-        this.map.getLayer(layerId).setVisibility(visibility);
-      },
-
-      setSelectable: function (layerId) {
-        var layer = this.map.getLayer(layerId),
-        control = this.map.getControl("selectControl");
-
-        control.setLayer(layer);
+        this.vectorLayer.events.fallThrough = true;
       },
 
       setCurrent: function (selectedLayer) {
         var self = this;
-
-        this.selectedLayer = selectedLayer;
-
-        _.each(self.collection.models, function (model) {
-          self.setVisibility(model.attributes.filename, false)
-        });
-
-        this.setVisibility(selectedLayer.get("filename"), true);
+        var filename = selectedLayer.get("filename");
+        this.vectorLayer.setUrl('./data/'+ filename);
       },
 
       getLayerGeoJSON: function (layerId) {
@@ -181,8 +158,6 @@ define(["OpenLayers",
         var GeoJSONString = this.format.write(features);
         var GeoJSONObject;
 
-        // console.log(features);
-        
         if (features[0]) {
           GeoJSONObject = JSON.parse(GeoJSONString);
           GeoJSONObject.crs = this.format.createCRSObject(features[0]);
@@ -193,8 +168,8 @@ define(["OpenLayers",
       },
 
       selectedFeature: function (event) {
-        this.selectedLayer.set("selected", event.feature);
-        this.selectedLayer.trigger("featureEvent", event);
+        this.model.set("selected", event.feature);
+        this.model.trigger("featureEvent", event);
       }
 
     }); 

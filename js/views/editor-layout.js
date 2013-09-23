@@ -35,7 +35,6 @@ define([
           self.attachSubViews();
         });
 
-
         self.layers.selected.on("featureEvent", self.featureEvent, self);
 
         self.tags_collection.on("updated", self.setUpdatedFlag, self);
@@ -57,16 +56,19 @@ define([
           collection: self.tags_collection
         });
 
+        // this should be a call firing the select event
+        this.layers.select(self.layers.models[0].get("filename"));
+        
         self.mapView = new MapView({
-          collection: self.layers
+          model: self.layers.selected
         });
 
         self.mapView.panAndZoom();
 
         // this.mapView.setVisibility("obrasprivadas.geojson", true);
 
-        self.mapView.addSelectControl();
-        //self.mapView.addControlPanel();
+        // self.mapView.addSelectControl();
+        // self.mapView.addControlPanel();
         // self.mapView.addEditingToolbar("cpc.geojson");
       },
 
