@@ -49,9 +49,9 @@ Estilos para el panel de edición
     position:absolute;
     top:0px;
     right:0px;
-    width:  105px;
+    width:  265px;
     height: 32px;
-    background:rgba(255,255,255,0.6);;
+    /* background:rgba(255,255,255,0.6);;*/
 }
 .olControlPanel div {
     float:right;
@@ -60,21 +60,42 @@ Estilos para el panel de edición
     margin:5px;
     /*background-color:white;*/
 }
+
+/* modify */
 .olControlPanel .olControlModifyFeatureItemActive { 
-  background-image: url("img/draw_polygon_on.png");
+  background-image: url("img/move_feature_on.png");
 }
 .olControlPanel .olControlModifyFeatureItemInactive { 
-  background-image: url("img/draw_polygon_off.png");
+  background-image: url("img/move_feature_off.png");
 }
+
 .olControlPanel .olControlSelectFeatureItemActive { 
   background-image: url("img/pan_on.png");
 }
 .olControlPanel .olControlSelectFeatureItemInactive { 
   background-image: url("img/pan_off.png");
 }
-.olControlPanel .olControlDrawFeatureItemActive { 
-  background-image: url("img/draw_point_on.png");
+
+/* polygon */
+.olControlPanel .olControlDrawFeaturePolygonItemActive { 
+  background-image: url("img/draw_polygon_on.png");
 }
-.olControlPanel .olControlDrawFeatureItemInactive { 
-  background-image: url("img/draw_point_off.png");
+.olControlPanel .olControlDrawFeaturePolygonItemInactive { 
+  background-image: url("img/draw_polygon_off.png");
+}
+
+/* line */
+.olControlPanel .olControlDrawFeaturePathItemActive { 
+  background-image: url("img/draw_line_on.png");
+}
+.olControlPanel .olControlDrawFeaturePathItemInactive { 
+  background-image: url("img/draw_line_off.png");
+}
+
+/* point */
+.olControlPanel .olControlDrawFeaturePointItemActive { 
+  background-image: url("img/add_point_on.png");
+}
+.olControlPanel .olControlDrawFeaturePointItemInactive { 
+  background-image: url("img/add_point_off.png");
 }

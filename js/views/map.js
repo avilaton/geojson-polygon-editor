@@ -46,6 +46,7 @@ define(["OpenLayers",
 
         // this.addSelectControl().activate();
         this.addEditingControls();
+        // this.addEditingToolbar();
 
         this.model.on("change:filename", self.setCurrent, self);
 
@@ -82,45 +83,65 @@ define(["OpenLayers",
       },
 
       addEditingToolbar: function (layerId) {
-        var layer = this.map.getLayer(layerId);
-        var control = new OpenLayers.Control.EditingToolbar(layer);
+        var self = this;
+        var control = new OpenLayers.Control.EditingToolbar(self.vectorLayer);
         this.map.addControl(control);
       },
 
       addEditingControls: function () {
         var self = this;
+        var ctrls = {};
 
-        this.editingCtl = {
-          poly : new OpenLayers.Control.DrawFeature(self.vectorLayer,
-            OpenLayers.Handler.Polygon),
-          modify: new OpenLayers.Control.ModifyFeature(self.vectorLayer),
-          select: new OpenLayers.Control.SelectFeature(self.vectorLayer, {
-            clickout: true, 
-            toggle: true,
-            multiple: false, 
-            hover: false
-          }),
-          snap: new OpenLayers.Control.Snapping({
-            layer: self.vectorLayer,
-            targets: [self.vectorLayer],
-            greedy: false
-          })
-        };
+        ctrls.point = new OpenLayers.Control.DrawFeature(
+          self.vectorLayer,
+          OpenLayers.Handler.Point,
+          {'displayClass': 'olControlDrawFeaturePoint'}
+        );
 
-        this.editingCtl.snap.activate();
+        ctrls.path = new OpenLayers.Control.DrawFeature(
+          self.vectorLayer,
+          OpenLayers.Handler.Path,
+          {'displayClass': 'olControlDrawFeaturePath'}
+        );
 
-        this.editingCtl.select.handlers['feature'].stopDown = false;
-        this.editingCtl.select.handlers['feature'].stopUp = false;
-        
+        ctrls.poly = new OpenLayers.Control.DrawFeature(
+          self.vectorLayer,
+          OpenLayers.Handler.Polygon,
+          {'displayClass': 'olControlDrawFeaturePolygon'}
+        );
+
+        ctrls.modify = new OpenLayers.Control.ModifyFeature(self.vectorLayer);
+
+        ctrls.select = new OpenLayers.Control.SelectFeature(self.vectorLayer, {
+          clickout: true, 
+          toggle: true,
+          multiple: false, 
+          hover: false
+        });
+
+        ctrls.snap = new OpenLayers.Control.Snapping({
+          layer: self.vectorLayer,
+          targets: [self.vectorLayer],
+          greedy: false
+        });
+
+        ctrls.snap.activate();
+
+        ctrls.select.handlers['feature'].stopDown = false;
+        ctrls.select.handlers['feature'].stopUp = false;
+
         var panel = new OpenLayers.Control.Panel({
-          defaultControl:self.editingCtl.select
+          defaultControl: ctrls.select
         });
 
         panel.addControls([
-          self.editingCtl.poly,
-          self.editingCtl.modify,
-          self.editingCtl.select
+          ctrls.point,
+          ctrls.path,
+          ctrls.poly,
+          ctrls.modify,
+          ctrls.select
         ]);
+
         this.map.addControl(panel);
       },
 

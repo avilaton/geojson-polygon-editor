@@ -54,14 +54,14 @@ define([
 
     Styles.select = new OpenLayers.StyleMap({
       'default': new OpenLayers.Style({strokeColor: "green", 
-        strokeWidth: 2, strokeOpacity: 1, pointRadius: 2, 
+        strokeWidth: 2, strokeOpacity: 1, pointRadius: 6, 
         fillColor:"green", fill:true, fillOpacity:0.1}),
-      'select': new OpenLayers.Style({strokeColor: "blue", 
-        strokeWidth: 5, strokeOpacity: 0.6, pointRadius: 2, 
-        fillColor:"blue", fill:true, fillOpacity:0.3}),
+      'select': new OpenLayers.Style({strokeColor: "green", 
+        strokeWidth: 5, strokeOpacity: 0.6, pointRadius: 6, 
+        fillColor:"yellow", fill:true, fillOpacity:0.3}),
       'temporary': new OpenLayers.Style({strokeColor: "green", 
-        strokeWidth: 3, strokeOpacity: 0.6, pointRadius: 8, 
-        fillColor:"blue", fill:true, fillOpacity:0.5})
+        strokeWidth: 5, strokeOpacity: 0.6, pointRadius: 8, 
+        fillColor:"yellow", fill:true, fillOpacity:0.5})
     });
 
     return Styles;
