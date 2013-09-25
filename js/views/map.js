@@ -175,7 +175,7 @@ define(["OpenLayers",
       },
 
       getLayerGeoJSON: function (layerId) {
-        var features = this.map.getLayer(layerId).features;
+        var features = this.vectorLayer.features;
         var GeoJSONString = this.format.write(features);
         var GeoJSONObject;
 

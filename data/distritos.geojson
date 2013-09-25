@@ -449,7 +449,7 @@
             }, 
             "type": "Feature", 
             "properties": {
-                "Name": "1"
+                "name": "1"
             }, 
             "id": "way.-35182"
         }, 

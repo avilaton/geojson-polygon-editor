@@ -93,8 +93,7 @@ define([
       },
 
       saveLayer: function () {
-        var layerId = this.layers.selected.get("filename");
-        var geojson = this.mapView.getLayerGeoJSON(layerId);
+        var geojson = this.mapView.getLayerGeoJSON();
 
         this.layers.selected.save(geojson);
       },
