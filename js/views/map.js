@@ -149,13 +149,16 @@ define(["OpenLayers",
         var self = this;
         var filename = model.get("filename");
 
-        this.vectorLayer = new OpenLayers.Layer.GML(
-          "Vector Layer",
-          "./data/" + filename,
-          {
-            format: OpenLayers.Format.GeoJSON,
-            styleMap: Styles["select"],
-            visibility: true
+        this.vectorLayer = new OpenLayers.Layer.Vector("Vector Layer", {
+          visibility: true,
+          strategies: [new OpenLayers.Strategy.Fixed()],
+          styleMap: Styles["select"],
+          protocol: new OpenLayers.Protocol.HTTP({
+            format: new OpenLayers.Format.GeoJSON({
+              keepData: true
+            }),
+            url: "./data/" + filename
+          })
         });
 
         this.map.addLayer(self.vectorLayer);
@@ -163,15 +166,22 @@ define(["OpenLayers",
         this.vectorLayer.events.on({
           "featureselected": self.selectedFeature,
           "featureunselected": self.selectedFeature, 
+          "loadend": self.setCollectionTags,
           scope: self
         });
+
         this.vectorLayer.events.fallThrough = true;
       },
 
       setCurrent: function (selectedLayer) {
         var self = this;
         var filename = selectedLayer.get("filename");
-        this.vectorLayer.setUrl('./data/'+ filename);
+        this.vectorLayer.refresh({url:'./data/'+ filename});
+      },
+
+      setCollectionTags: function (event) {
+        this.model.set("collectionTags",this.vectorLayer.protocol.format.data.properties);
+        console.log("collection tags were set on model!", this.model);
       },
 
       getLayerGeoJSON: function (layerId) {

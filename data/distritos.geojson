@@ -181,6 +181,7 @@
             }, 
             "type": "Feature", 
             "properties": {
+                "newKey": "newValue", 
                 "name": "1"
             }, 
             "id": "way.-35357"
@@ -487,7 +488,7 @@
             }, 
             "type": "Feature", 
             "properties": {
-                "testkey": "testvalue"
+                "testkey": "testva"
             }
         }
     ]

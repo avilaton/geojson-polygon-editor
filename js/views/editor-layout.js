@@ -37,6 +37,8 @@ define([
 
         self.layers.selected.on("featureEvent", self.featureEvent, self);
 
+        self.layers.selected.on("change:collectionTags", self.onCollectionTagsSet, self);
+
         self.tags_collection.on("updated", self.setUpdatedFlag, self);
 
       },
@@ -90,6 +92,10 @@ define([
         var $target = $(event.currentTarget);
 
         this.layers.select($target.val());
+      },
+
+      onCollectionTagsSet: function (event) {
+        console.log(event);
       },
 
       saveLayer: function () {
