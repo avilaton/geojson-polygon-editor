@@ -55,7 +55,8 @@ define([
 
         self.tags_view = new TagsView({
           el: $('#tags'),
-          collection: self.tags_collection
+          collection: self.tags_collection,
+          selectedLayer: self.layers.selected
         });
 
         // this should be a call firing the select event

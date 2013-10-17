@@ -19,7 +19,8 @@ function (_, Backbone, Handlebars, tmpl) {
       "blur .editable": "saveTag"
     },
 
-    initialize: function(model){ 
+    initialize: function(options){ 
+      this.selectedLayer = options.selectedLayer;
 
       this.listenTo(this.collection, "add remove reset", this.render);
       this.render();
@@ -28,9 +29,10 @@ function (_, Backbone, Handlebars, tmpl) {
 
     render: function () {
       var self = this;
-
+      console.log(self);
       this.$el.html(this.template({
           tags: self.collection.toJSON()
+          , selectedLayer: self.selectedLayer ? self.selectedLayer.toJSON() : {}
         }) 
       );
 
