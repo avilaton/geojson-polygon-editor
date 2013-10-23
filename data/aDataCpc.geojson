@@ -8,11 +8,17 @@
  "type": "FeatureCollection",
  "properties": {
   "tags": {
-    "a1": {
-      "name": "barrio",
+    "tipo1": {
+      "name": "Zona Tipo 1",
       "filename": "somefile.json"
+    },
+    "tipo2": {
+      "name": "Zona Tipo 2",
+      "filename": "somsdfsdfsdfefile.json"
     }
-  }
+  },
+  "uri": "some significant uri",
+  "otherData": "none"
  },
  "features": [
   {

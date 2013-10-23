@@ -2,15 +2,20 @@ define([
   "underscore",
   "backbone",
   "handlebars",
+  "models/tag",
   "collections/tags",
   "collections/layers",
+  "collections/globalTags",
   "views/map",
   "views/tags",
+  "views/globalTags",
   "text!../../templates/editor-layout.handlebars"
   ],
   function (_, Backbone, Handlebars, 
-    TagsCollection, LayersCollection, 
-    MapView, TagsView, tmpl) {
+    TagModel,
+    TagsCollection, LayersCollection, GlobalTagsCollection,
+    MapView, TagsView, GlobalTagsView,
+    tmpl) {
 
     var View = Backbone.View.extend({
 
@@ -29,6 +34,8 @@ define([
 
         self.layers = new LayersCollection();
         self.tags_collection = new TagsCollection();
+        // self.globalTagsCollection = new GlobalTagsCollection();
+        self.globalTags = new TagModel();
 
         self.layers.fetch().done(function () {
           self.render();
@@ -37,7 +44,7 @@ define([
 
         self.layers.selected.on("featureEvent", self.featureEvent, self);
 
-        self.layers.selected.on("change:collectionTags", self.onCollectionTagsSet, self);
+        self.layers.selected.on("change:collectionTags", self.onGlobalTagsSet, self);
 
         self.tags_collection.on("updated", self.setUpdatedFlag, self);
 
@@ -52,6 +59,11 @@ define([
 
       attachSubViews: function () {
         var self = this;
+
+        self.collectionTagsView = new GlobalTagsView({
+          el: $('#globalTags'),
+          model: self.globalTags
+        });
 
         self.tags_view = new TagsView({
           el: $('#tags'),
@@ -95,8 +107,13 @@ define([
         this.layers.select($target.val());
       },
 
-      onCollectionTagsSet: function (event) {
-        console.log(event);
+      onGlobalTagsSet: function (model) {
+        var self = this;
+        console.log("received collection tags", model, self.globalTags);
+        var layerProperties = model.get("collectionTags");
+        if (layerProperties.hasOwnProperty('tags')) {
+          self.globalTags.set(layerProperties.tags);
+        };
       },
 
       saveLayer: function () {
