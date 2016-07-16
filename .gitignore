@@ -1,2 +1,2 @@
 bower_components/
-server/*.pyc
+*.pyc
