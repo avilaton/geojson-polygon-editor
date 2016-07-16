@@ -1,5 +1,8 @@
 import os
-from flask import Flask, jsonify, send_from_directory, send_file
+import json
+from flask import Flask, jsonify, send_from_directory, send_file, request
+
+
 app = Flask(__name__)
 
 
@@ -14,8 +17,17 @@ def layers():
 
 
 @app.route('/data/<path:filename>')
-def layer(filename):
+def get_layer(filename):
     return send_from_directory('./data/', filename)
+
+
+@app.route('/data/<path:filename>', methods=['PUT'])
+def save_layer(filename):
+    payload = request.get_json()
+    with open('./data/' + filename, 'w') as f:
+        body = json.dumps(payload, indent=2)
+        f.write(body)
+    return jsonify(payload)
 
 
 @app.route('/<path:filename>')
