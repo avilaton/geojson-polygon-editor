@@ -1,9 +1,18 @@
 import os
 import json
-from flask import Flask, jsonify, send_from_directory, send_file, request
+from flask import Flask, jsonify, send_from_directory, send_file, request, render_template
+from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.sqlite'
+db = SQLAlchemy(app)
+
+
+class Layer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    geom = db.Column(db.Text)
 
 
 @app.route('/data/')
@@ -37,12 +46,12 @@ def statics(filename):
 
 @app.route('/')
 def index():
-    return send_file('./index.html')
+    return render_template('index.html')
 
 
 @app.route('/editor.html')
 def editor():
-    return send_file('./editor.html')
+    return render_template('editor.html')
 
 
 if __name__ == "__main__":
