@@ -12,6 +12,12 @@ db = SQLAlchemy(app)
 class Layer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
+
+
+class Feature(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    layer_id = db.Column(db.Integer, db.ForeignKey('layer.id'), nullable=False)
+    layer = db.relationship('Layer', backref=db.backref('features', lazy='dynamic'))
     geom = db.Column(db.Text)
 
 
@@ -37,11 +43,6 @@ def save_layer(filename):
         body = json.dumps(payload, indent=2)
         f.write(body)
     return jsonify(payload)
-
-
-@app.route('/<path:filename>')
-def statics(filename):
-    return send_from_directory('./', filename)
 
 
 @app.route('/')
