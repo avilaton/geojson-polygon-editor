@@ -6,6 +6,7 @@ from app import db, Layer, Feature
 DATA_DIR = './data/'
 EXT = '.geojson'
 
+
 def load_layer_names():
     layers = []
     for f in os.listdir(DATA_DIR):
@@ -36,9 +37,10 @@ def main():
 
     for layer_name in layer_names:
         layer = Layer(name=layer_name)
-        db.session.add(layer)
         payload = load_layer(layer_name)
+        layer.geojson = json.dumps(payload, separators=(',', ':'))
         load_features(layer, payload)
+        db.session.add(layer)
         db.session.commit()
 
 
