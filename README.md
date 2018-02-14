@@ -19,3 +19,19 @@ Start a dev server by running
 	$ flaks run
 
 and point your browser to [http://localhost:5000](http://localhost:5000).
+
+
+# Pipenv way
+
+Install dependencies using
+
+	$ pipenv install
+
+Run application using
+
+	$ pipenv shell
+	$ honcho start web
+
+Load database using
+	
+	$ honcho run python load.py
