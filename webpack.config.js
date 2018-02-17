@@ -8,13 +8,12 @@ const webpack = require('webpack')
 module.exports = {
   'context': path.join(__dirname, 'static/js'),
   'resolve': {
-    // 'root': [
-    //   path.join(__dirname, 'static/js')
-    // ],
+    'modules': ['static/js', 'node_modules'],
     'alias': {
       // 'backbone': '../bower_components/backbone-amd/backbone',
       // 'jquery': '../bower_components/jquery/jquery',
-      'OpenLayers': 'lib/OpenLayers/OpenLayers',
+      // 'OpenLayers': './lib/OpenLayers/OpenLayers',
+      'OpenLayers': path.join(__dirname, 'static/js/lib/OpenLayers/OpenLayers.js'),
       // 'underscore': '../bower_components/underscore-amd/underscore',
       // 'handlebars': '../bower_components/handlebars/handlebars',
       // 'text': '../bower_components/requirejs-text/text'
@@ -29,10 +28,10 @@ module.exports = {
   },
   'module': {
     'loaders': [
-      {
-        'test': /OpenLayers/,
-        'loader': 'exports?OpenLayers'
-      },
+      // {
+      //   'test': /OpenLayers/,
+      //   'loader': 'exports?OpenLayers'
+      // },
       {
         test: /\.handlebars$/,
         loader: "handlebars-loader"

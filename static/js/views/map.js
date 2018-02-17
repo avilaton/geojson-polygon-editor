@@ -1,8 +1,11 @@
-define(["OpenLayers",
+var $ = require('jquery')
+
+define([
   "backbone",
   "./styles"],
-  function (OpenLayers, Backbone, Styles) {
+  function (Backbone, Styles) {
     'use strict';
+console.log(OpenLayers)
 
     var MapView = Backbone.View.extend({
       el: $("#mapBox"),
