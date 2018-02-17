@@ -1,16 +1,16 @@
+var tmpl = require("../../templates/tags-list.handlebars")
+
 define([
   "underscore",
-  "backbone",
-  "handlebars",
-  "text!../../templates/tags-list.handlebars"
+  "backbone"
   ],
-function (_, Backbone, Handlebars, tmpl) {
+function (_, Backbone) {
 
   var View = Backbone.View.extend({
     
     // el: $("#tags"),
 
-    template: Handlebars.compile(tmpl),
+    template: tmpl,
 
     events: {
       "click .new-tag": "newTag",

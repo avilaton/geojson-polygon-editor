@@ -1,8 +1,8 @@
 define([
   "underscore",
   "backbone",
-  "models/storage",
-  "models/layer"],
+  "../models/storage",
+  "../models/layer"],
   function (_, Backbone, Storage, LayerModel) {
 
     var LayersCollection = Backbone.Collection.extend({

@@ -1,131 +1,121 @@
-define([
-  "underscore",
-  "backbone",
-  "handlebars",
-  "models/tag",
-  "collections/tags",
-  "collections/layers",
-  "collections/globalTags",
-  "views/map",
-  "views/tags",
-  "views/globalTags",
-  "text!../../templates/editor-layout.handlebars"
-  ],
-  function (_, Backbone, Handlebars, 
-    TagModel,
-    TagsCollection, LayersCollection, GlobalTagsCollection,
-    MapView, TagsView, GlobalTagsView,
-    tmpl) {
+var Backbone = require('backbone')
+var _ = require('underscore')
+var $ = require('jquery')
+var tmpl = require('../../templates/editor-layout.handlebars')
 
-    var View = Backbone.View.extend({
+var TagModel = require('../models/tag')
+var LayersCollection = require('../collections/layers')
+var TagsCollection = require('../collections/tags')
+var GlobalTagsCollection = require('../collections/globalTags')
+var GlobalTagsView = require('./globalTags')
+var TagsView = require('./tags')
+var MapView = require('./map')
 
-      el: $("#layout"),
+module.exports = Backbone.View.extend({
 
-      events: {
-        "change select.layer": "onChangeLayer",
-        "click .btn.save-layer": "saveLayer",
-        "click .btn.export-layer": "exportLayer"
-      },
+  el: $("#layout"),
 
-      template: Handlebars.compile(tmpl),
+  events: {
+    "change select.layer": "onChangeLayer",
+    "click .btn.save-layer": "saveLayer",
+    "click .btn.export-layer": "exportLayer"
+  },
 
-      initialize: function(vent) {
-        var self = this;
+  template: tmpl,
 
-        self.layers = new LayersCollection();
-        self.tags_collection = new TagsCollection();
-        // self.globalTagsCollection = new GlobalTagsCollection();
-        self.globalTags = new TagModel();
+  initialize: function(vent) {
+    var self = this;
 
-        self.layers.fetch().done(function () {
-          self.render();
-          self.attachSubViews();
-        });
+    self.layers = new LayersCollection();
+    self.tags_collection = new TagsCollection();
+    // self.globalTagsCollection = new GlobalTagsCollection();
+    self.globalTags = new TagModel();
 
-        self.layers.selected.on("featureEvent", self.featureEvent, self);
+    self.layers.fetch().done(function () {
+      self.render();
+      self.attachSubViews();
+    });
 
-        self.layers.selected.on("change:collectionTags", self.onGlobalTagsSet, self);
+    self.layers.selected.on("featureEvent", self.featureEvent, self);
 
-        self.tags_collection.on("updated", self.setUpdatedFlag, self);
+    self.layers.selected.on("change:collectionTags", self.onGlobalTagsSet, self);
 
-      },
+    self.tags_collection.on("updated", self.setUpdatedFlag, self);
+  },
 
-      render: function () {
-        var self = this;
-        var layers = self.layers.toJSON();
-        
-        this.$el.html(this.template({layers: layers}));
-      },
+  render: function () {
+    var self = this;
+    var layers = self.layers.toJSON();
 
-      attachSubViews: function () {
-        var self = this;
+    this.$el.html(this.template({layers: layers}));
+  },
 
-        self.collectionTagsView = new GlobalTagsView({
-          el: $('#globalTags'),
-          model: self.globalTags
-        });
+  attachSubViews: function () {
+    var self = this;
 
-        self.tags_view = new TagsView({
-          el: $('#tags'),
-          collection: self.tags_collection,
-          selectedLayer: self.layers.selected
-        });
+    self.collectionTagsView = new GlobalTagsView({
+      el: $('#globalTags'),
+      model: self.globalTags
+    });
 
-        // this should be a call firing the select event
-        this.layers.select(self.layers.models[0].get("filename"));
-        
-        self.mapView = new MapView({
-          model: self.layers.selected
-        });
+    self.tags_view = new TagsView({
+      el: $('#tags'),
+      collection: self.tags_collection,
+      selectedLayer: self.layers.selected
+    });
 
-        self.mapView.panAndZoom();
+    // this should be a call firing the select event
+    this.layers.select(self.layers.models[0].get("filename"));
+    
+    self.mapView = new MapView({
+      model: self.layers.selected
+    });
 
-        // this.mapView.setVisibility("obrasprivadas.geojson", true);
+    self.mapView.panAndZoom();
 
-        // self.mapView.addSelectControl();
-        // self.mapView.addControlPanel();
-        // self.mapView.addEditingToolbar("cpc.geojson");
-      },
+    // this.mapView.setVisibility("obrasprivadas.geojson", true);
 
-      setUpdatedFlag: function (event) {
-        this.layers.selected.set("updated", true);
-      },
+    // self.mapView.addSelectControl();
+    // self.mapView.addControlPanel();
+    // self.mapView.addEditingToolbar("cpc.geojson");
+  },
 
-      featureEvent: function (event) {
-        var self = this;
+  setUpdatedFlag: function (event) {
+    this.layers.selected.set("updated", true);
+  },
 
-        if (event.type == "featureselected") {
-          self.tags_collection.parseFeature(event.feature);
-        } else if (event.type == "featureunselected") {
-          self.tags_collection.reset();
-        };
-      },
+  featureEvent: function (event) {
+    var self = this;
 
-      onChangeLayer: function (event) {
-        var $target = $(event.currentTarget);
+    if (event.type == "featureselected") {
+      self.tags_collection.parseFeature(event.feature);
+    } else if (event.type == "featureunselected") {
+      self.tags_collection.reset();
+    };
+  },
 
-        this.layers.select($target.val());
-      },
+  onChangeLayer: function (event) {
+    var $target = $(event.currentTarget);
 
-      onGlobalTagsSet: function (model) {
-        var self = this;
-        console.log("received collection tags", model, self.globalTags);
-        var layerProperties = model.get("collectionTags");
-        if (layerProperties.hasOwnProperty('tags')) {
-          self.globalTags.set(layerProperties.tags);
-        };
-      },
+    this.layers.select($target.val());
+  },
 
-      saveLayer: function () {
-        var geojson = this.mapView.getLayerGeoJSON();
+  onGlobalTagsSet: function (model) {
+    var self = this;
+    console.log("received collection tags", model, self.globalTags);
+    var layerProperties = model.get("collectionTags");
+    if (layerProperties.hasOwnProperty('tags')) {
+      self.globalTags.set(layerProperties.tags);
+    };
+  },
 
-        this.layers.selected.save(geojson);
-      },
+  saveLayer: function () {
+    var geojson = this.mapView.getLayerGeoJSON();
 
-      exportLayer: function (event) {
-        console.log(event);
-      }
-    }); 
+    this.layers.selected.save(geojson);
+  },
 
-return View;
+  exportLayer: function (event) {
+    console.log(event);
+  }
 });

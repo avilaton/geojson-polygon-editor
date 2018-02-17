@@ -1,6 +1,6 @@
 define(["OpenLayers",
   "backbone",
-  "views/styles"],
+  "./styles"],
   function (OpenLayers, Backbone, Styles) {
     'use strict';
 

@@ -1,0 +1,35 @@
+{
+  "name": "geojson-polygon-editor",
+  "version": "1.0.0",
+  "description": "## Setup",
+  "main": "webpack.config.js",
+  "scripts": {
+    "start": "NODE_ENV=webpack-dev-server node_modules/.bin/webpack-dev-server --watch --progress --colors --port 2992 --content-base device_repair/static/dist",
+    "build": "node_modules/.bin/webpack --profile"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avilaton/geojson-polygon-editor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/avilaton/geojson-polygon-editor/issues"
+  },
+  "homepage": "https://github.com/avilaton/geojson-polygon-editor#readme",
+  "devDependencies": {
+    "underscore": "^1.8.3",
+    "webpack": "^2.7.0",
+    "webpack-dev-server": "^2.4.5"
+  },
+  "dependencies": {
+    "backbone": "^1.3.3",
+    "backbone-amd": "~1.0.0",
+    "handlebars": "^1.3.0",
+    "handlebars-loader": "^1.6.0",
+    "jquery": "^2.2.4",
+    "requirejs": "~2.1.8",
+    "requirejs-text": "~2.0.10",
+    "underscore-amd": "~1.5.1"
+  }
+}

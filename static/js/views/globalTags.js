@@ -1,16 +1,17 @@
+var tmpl = require('../../templates/global-tags.handlebars')
+
 define([
   "underscore",
   "backbone",
-  "handlebars",
-  "text!../../templates/global-tags.handlebars"
+  "../../templates/global-tags.handlebars"
   ],
-function (_, Backbone, Handlebars, tmpl) {
+function (_, Backbone) {
 
   var View = Backbone.View.extend({
     
     // el: $("#tags"),
 
-    template: Handlebars.compile(tmpl),
+    template: tmpl,
 
     events: {
 
