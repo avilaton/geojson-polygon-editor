@@ -5,7 +5,8 @@
   "main": "webpack.config.js",
   "scripts": {
     "start": "NODE_ENV=webpack-dev-server node_modules/.bin/webpack-dev-server --watch --progress --colors --port 2992 --content-base device_repair/static/dist",
-    "build": "node_modules/.bin/webpack --profile"
+    "build": "node_modules/.bin/webpack --profile",
+    "postinstall": "node_modules/.bin/webpack"
   },
   "repository": {
     "type": "git",
