@@ -1,4 +1,4 @@
-// require('OpenLayers')
+// var OpenLayers = require('exports-loader?OpenLayers!../lib/OpenLayers/OpenLayers.js')
 
 define([],
   function () {

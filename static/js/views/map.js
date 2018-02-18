@@ -1,5 +1,7 @@
 var $ = require('jquery')
 
+// var OpenLayers = require('exports-loader?OpenLayers!../lib/OpenLayers/OpenLayers.js')
+
 define([
   "backbone",
   "./styles"],
