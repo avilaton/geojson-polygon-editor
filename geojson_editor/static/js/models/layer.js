@@ -1,3 +1,5 @@
+var $ = require('jquery')
+
 define([
 	"underscore",
 	"backbone"],

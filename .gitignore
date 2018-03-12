@@ -1,6 +1,7 @@
 bower_components/
-*.pyc
+**/*.pyc
 node_modules/
 .env
 *.sqlite
 static/dist/
+**/__pycache__

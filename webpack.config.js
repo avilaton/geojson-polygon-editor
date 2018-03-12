@@ -2,9 +2,10 @@
 
 const path = require('path')
 const webpack = require('webpack')
+const BASE = './geojson_editor/static'
 
 module.exports = {
-  'context': path.join(__dirname, 'static/js'),
+  'context': path.join(__dirname, BASE, 'js'),
   'resolve': {
     'modules': ['static/js', 'node_modules'],
     'alias': {

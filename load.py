@@ -1,6 +1,6 @@
 import os
 import json
-from app import db, Layer, Feature
+from geojson_editor.database import db, Layer
 
 
 DATA_DIR = './data/'
@@ -22,14 +22,6 @@ def load_layer(name):
     return payload
 
 
-def load_features(layer, payload):
-    for item in payload['features']:
-        geom = json.dumps(item, separators=(',', ':'))
-        feature = Feature(geom=geom)
-        feature.layer = layer
-        db.session.add(feature)
-
-
 def main():
     db.drop_all()
     db.create_all()
@@ -39,9 +31,8 @@ def main():
         layer = Layer(name=layer_name)
         payload = load_layer(layer_name)
         layer.geojson = json.dumps(payload, separators=(',', ':'))
-        load_features(layer, payload)
         db.session.add(layer)
-        db.session.commit()
+    db.session.commit()
 
 
 if __name__ == '__main__':
