@@ -7,7 +7,6 @@ define([
   "./styles"],
   function (Backbone, Styles) {
     'use strict';
-console.log(OpenLayers)
 
     var MapView = Backbone.View.extend({
       el: $("#mapBox"),

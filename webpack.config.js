@@ -13,7 +13,8 @@ module.exports = {
     }
   },
   'entry': {
-    editor: './editor.js'
+    editor: './editor.js',
+    main: './main.js'
   },
   'output': {
     'path': path.join(__dirname, BASE, 'dist'),

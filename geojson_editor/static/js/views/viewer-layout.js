@@ -1,105 +1,72 @@
-define([
-  "underscore",
-  "backbone",
-  "handlebars",
-  "collections/tags",
-  "views/map",
-  "views/tags",
-  "text!../../templates/viewer-layout.handlebars"
-  ],
-function (_, Backbone, Handlebars, TagsCollection, MapView, 
-  TagsView, ViewLayoutTemplate) {
+var Backbone = require('backbone')
+var _ = require('underscore')
+var $ = require('jquery')
+var tmpl = require('../../templates/viewer-layout.handlebars')
 
-  var View = Backbone.View.extend({
+var TagsCollection = require('../collections/tags')
+var LayersCollection = require('../collections/layers')
+var MapView = require('./map')
+var TagsView = require('./tags')
+
+
+module.exports = Backbone.View.extend({
     el: $("#layout"),
     events: {
-      "click .checkbox": "onClickBarrios",
-      "change input[name=capasOption]": "onClickRadio",
-      "change select.layer": "onChangeSelectedLayer",
+      "change select.layer": "onChangeLayer",
       "featureselected": "rendertags",
       "click .btn.save-layer": "saveLayer"
     },
-    layers: {
-      barrios: {
-        name: "Barrios",
-        id: "barrios",
-        filename: "./data/barrios.geojson",
-        style: "overlay"
-      },
-      distritos: {
-        name: "Distritos", 
-        id: "distritos",
-        filename: "./data/distritos.geojson",
-        style: "overlay"
-      },
-      cpc: {
-        name: "Zonas CPC", 
-        id: "cpc",
-        filename: "./data/cpc.geojson",
-        style: "overlay"
-      },
-      obrasprivadas: {
-        name: "Obras Privadas",
-        id: "obrasprivadas",
-        filename: "./data/obrasprivadas.geojson",
-        style: "select"
-      },
-      usodesuelo: {
-        name: "Uso de Suelo",
-        id: "usodesuelo",
-        filename: "./data/usodesuelo.geojson",
-        style: "select"
-      },
-      personas: {
-        name: "Personas",
-        id: "personas",
-        filename: "./data/personas.geojson",
-        style: "select"
-      }
-    },
 
-    template: Handlebars.compile(ViewLayoutTemplate),
+    template: tmpl,
 
     initialize: function(vent) {
       var self = this;
 
-      self.render();
-
-      self.mapView = new MapView();
-
-      self.mapView.panAndZoom();
-
-      self.mapView.addLayer(self.layers.barrios);
-      self.mapView.addLayer(self.layers.distritos);
-      self.mapView.addLayer(self.layers.cpc);
-      self.mapView.addLayer(self.layers.obrasprivadas);
-      self.mapView.addLayer(self.layers.usodesuelo);
-      self.mapView.addLayer(self.layers.personas);
-
-      this.mapView.setVisibility("obrasprivadas", true);
-
-      self.mapView.addSelectControl(["obrasprivadas","usodesuelo", "personas"]);
-
+      self.layers = new LayersCollection();
       self.tags_collection = new TagsCollection();
 
-      self.tags_view = new TagsView({
-        el: $("#tags"),
-        collection: self.tags_collection
+      self.layers.fetch().done(function () {
+        self.render();
+        self.attachSubViews();
       });
 
-      vent.on("featureselected",function (event) {
-        self.mapEvent(event);
-      });
+      self.layers.selected.on("featureEvent", self.featureEvent, self);
     },
 
     render: function () {
-      this.$el.html(this.template(this));
-    },
-
-    mapEvent: function (event) {
       var self = this;
-      // this.mapView.toJSON(event.feature);
+      var layers = self.layers.toJSON();
+  
+      this.$el.html(this.template({layers: layers}));
+    },  
 
+    attachSubViews: function () {
+      var self = this;
+  
+      // self.collectionTagsView = new GlobalTagsView({
+      //   el: $('#globalTags'),
+      //   model: self.globalTags
+      // });
+  
+      self.tags_view = new TagsView({
+        el: $('#tags'),
+        collection: self.tags_collection,
+        selectedLayer: self.layers.selected
+      });
+  
+      // this should be a call firing the select event
+      this.layers.select(self.layers.models[0].get("filename"));
+      
+      self.mapView = new MapView({
+        model: self.layers.selected
+      });
+  
+      self.mapView.panAndZoom();
+    },
+  
+    featureEvent: function (event) {
+      var self = this;
+  
       if (event.type == "featureselected") {
         self.tags_collection.parseFeature(event.feature);
       } else if (event.type == "featureunselected") {
@@ -107,42 +74,12 @@ function (_, Backbone, Handlebars, TagsCollection, MapView,
       };
     },
 
-    onClickBarrios: function (event) {
-      var layer = event.currentTarget.control.value,
-        visibility = event.currentTarget.control.checked;
-
-      this.mapView.setVisibility(layer, visibility);
+    onChangeLayer: function (event) {
+      var $target = $(event.currentTarget);
+  
+      this.layers.select($target.val());
     },
-
-    onClickRadio: function (event) {
-      var target = event.currentTarget;
-      event.stopPropagation();
-
-      var allOptions = $("input[name="+target.name+"]");
-      for (var i = allOptions.length - 1; i >= 0; i--) {
-        this.mapView.setVisibility(allOptions[i].value, false)
-      };
-
-      this.mapView.setVisibility(event.currentTarget.value, true);
-      // this.mapView.setSelectable(event.currentTarget.value);
-    },
-
-    onChangeSelectedLayer: function (event) {
-      console.log('event', event);
-      var target = event.currentTarget;
-      console.log("selected option: ", target.value);
-      var allOptions = $(target).find('option');
-      console.log(allOptions);
-      for (var i = allOptions.length - 1; i >= 0; i--) {
-        if (allOptions[i].value) {
-          this.mapView.setVisibility(allOptions[i].value, false)
-        };
-      };
-      if (target.value) {
-        this.mapView.setVisibility(target.value, true);   
-      };
-    },
-
+  
     export: function () {
       var layerId = $('#layerId').val();
       console.log(layerId);
@@ -150,6 +87,3 @@ function (_, Backbone, Handlebars, TagsCollection, MapView,
     }
 
   }); 
-
-  return View;
-});

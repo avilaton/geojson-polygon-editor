@@ -1,36 +1,16 @@
-require.config({
-    baseUrl: 'static/js',
-    shim: {
-        OpenLayers: {
-            exports: 'OpenLayers'
-        },
-        handlebars: {
-            exports: 'Handlebars'
-        }
-    },
-    paths: {
-        "backbone": "../bower_components/backbone-amd/backbone",
-        "jquery": "../bower_components/jquery/jquery",
-        "OpenLayers": "lib/OpenLayers/OpenLayers",
-        "underscore": "../bower_components/underscore-amd/underscore",
-        "handlebars": "../bower_components/handlebars/handlebars",
-        "text": "../bower_components/requirejs-text/text"
-    }
-});
+var OpenLayers = require('script-loader!./lib/OpenLayers/OpenLayers.js')
+var Backbone = require('backbone')
+var _ = require('underscore')
+var LayoutView = require('./views/viewer-layout')
 
-require([
-    "views/viewer-layout"
-], function (LayoutView) {
-    'use strict';
+'use strict';
 
-    var App = {};
-    
-    App.vent = _.extend({}, Backbone.Events);
+var App = {};
 
-    App.layout_view = new LayoutView(App.vent);
-    
-    window.App = App;
+App.vent = _.extend({}, Backbone.Events);
 
-    return App;
+App.layout_view = new LayoutView(App.vent);
 
-});
+window.App = App;
+
+module.exports = App

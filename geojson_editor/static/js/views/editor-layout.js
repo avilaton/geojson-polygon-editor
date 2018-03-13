@@ -72,12 +72,6 @@ module.exports = Backbone.View.extend({
     });
 
     self.mapView.panAndZoom();
-
-    // this.mapView.setVisibility("obrasprivadas.geojson", true);
-
-    // self.mapView.addSelectControl();
-    // self.mapView.addControlPanel();
-    // self.mapView.addEditingToolbar("cpc.geojson");
   },
 
   setUpdatedFlag: function (event) {
