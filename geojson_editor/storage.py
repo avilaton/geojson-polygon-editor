@@ -3,16 +3,21 @@ import json
 from flask import current_app, request
 from geojson_editor.database import db, Layer
 
-STORAGE = 'db'
 STORAGE = 'filesystem'
+STORAGE = 'db'
 
 
 def get_layers():
     items = []
-    for f in os.listdir('./geojson_editor/data/'):
-        filename, extension = os.path.splitext(f)
-        if extension.endswith(".geojson"):
-            items.append({"filename": f})
+    if STORAGE == 'db':
+        query = db.session.query(Layer).all()
+        for layer in query:
+            items.append({"filename": layer.name + '.geojson'})
+    else:
+        for f in os.listdir('./geojson_editor/data/'):
+            filename, extension = os.path.splitext(f)
+            if extension.endswith(".geojson"):
+                items.append({"filename": f})
     return items
 
 
