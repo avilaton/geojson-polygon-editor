@@ -7,7 +7,7 @@ const BASE = './geojson_editor/static'
 module.exports = {
   'context': path.join(__dirname, BASE, 'js'),
   'resolve': {
-    'modules': ['static/js', 'node_modules'],
+    'modules': [path.join(__dirname, BASE, 'js'), 'node_modules'],
     'alias': {
       'OpenLayers': path.join(__dirname, 'static/js/lib/OpenLayers/OpenLayers.js'),
     }
@@ -16,7 +16,7 @@ module.exports = {
     editor: './editor.js'
   },
   'output': {
-    'path': path.join(__dirname, 'static/dist'),
+    'path': path.join(__dirname, BASE, 'dist'),
     'filename': '[name].js'
   },
   'module': {
