@@ -9,7 +9,7 @@ define([
       model: LayerModel,
 
       initialize: function () {
-        this.storage = new Storage('./data');
+        this.storage = new Storage('./api/layers.json');
         this.selected = new this.model;
       },
 

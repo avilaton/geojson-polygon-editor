@@ -162,7 +162,7 @@ console.log(OpenLayers)
             format: new OpenLayers.Format.GeoJSON({
               keepData: true
             }),
-            url: "./data/" + filename
+            url: "./api/layers/" + filename
           })
         });
 
@@ -181,7 +181,7 @@ console.log(OpenLayers)
       setCurrent: function (selectedLayer) {
         var self = this;
         var filename = selectedLayer.get("filename");
-        this.vectorLayer.refresh({url:'./data/'+ filename});
+        this.vectorLayer.refresh({url:'./api/layers/'+ filename});
       },
 
       setCollectionTags: function (event) {
