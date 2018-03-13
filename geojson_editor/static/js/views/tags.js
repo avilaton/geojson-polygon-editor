@@ -1,4 +1,5 @@
 var tmpl = require("../../templates/tags-list.handlebars")
+var $ = require('jquery')
 
 define([
   "underscore",
