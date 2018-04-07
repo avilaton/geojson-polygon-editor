@@ -8,6 +8,7 @@ def index():
     return render_template('index.html')
 
 
-@web.route('/editor')
-def editor():
-    return render_template('editor.html')
+@web.route('/editor/<layer_id>')
+def editor(layer_id):
+    print(layer_id)
+    return render_template('editor.html', layer_id=layer_id)

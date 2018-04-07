@@ -161,7 +161,7 @@ define([
             format: new OpenLayers.Format.GeoJSON({
               keepData: true
             }),
-            url: "./api/layers/" + filename
+            url: "/api/layers/" + filename
           })
         });
 
@@ -180,7 +180,7 @@ define([
       setCurrent: function (selectedLayer) {
         var self = this;
         var filename = selectedLayer.get("filename");
-        this.vectorLayer.refresh({url:'./api/layers/'+ filename});
+        this.vectorLayer.refresh({url:'/api/layers/'+ filename});
       },
 
       setCollectionTags: function (event) {

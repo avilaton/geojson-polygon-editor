@@ -8,7 +8,7 @@ function (_, Backbone) {
 	var Model = Backbone.Model.extend({
 		
 		initialize: function () {
-			this.directory = './api/layers/';
+			this.directory = '/api/layers/';
 		},
 
 		save: function (geojson) {
@@ -21,7 +21,6 @@ function (_, Backbone) {
 	            data: geojson,
 	            url: self.directory + filename,
 	            success: function( result ) {
-	            	console.log("save layer result:", result);
 	                return result;
 	            }
 	        });
