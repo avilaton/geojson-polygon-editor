@@ -185,7 +185,6 @@ define([
 
       setCollectionTags: function (event) {
         this.model.set("collectionTags",this.vectorLayer.protocol.format.data.properties);
-        console.log("collection tags were set on model!", this.model);
       },
 
       getLayerGeoJSON: function (layerId) {

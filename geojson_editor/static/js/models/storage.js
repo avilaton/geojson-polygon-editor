@@ -31,7 +31,6 @@ function (_, Backbone) {
 				contentType: 'application/json',
 	            url: self.directory + '/' + filename,
 	            success: function( result ) {
-	                console.log(result);
 	                return result;
 	            }
 	        });

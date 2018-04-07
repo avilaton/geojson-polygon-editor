@@ -30,7 +30,6 @@ function (_, Backbone) {
 
     render: function () {
       var self = this;
-      console.log(self);
       this.$el.html(this.template({
           tags: self.collection.toJSON()
           , selectedLayer: self.selectedLayer ? self.selectedLayer.toJSON() : {}
@@ -54,7 +53,6 @@ function (_, Backbone) {
     saveTag: function (event) {
       var $target = $(event.currentTarget);
       var model = this.collection.get($target.data("id"));
-      console.log("saveTag:", model);
 
       if ($target.hasClass("key")) {
         model.set({key: $target.text()});
@@ -66,7 +64,6 @@ function (_, Backbone) {
 
     onEditableFocus: function (event) {
       // $(event.currentTarget).select();
-      console.log(event);
     }
 
   }); 

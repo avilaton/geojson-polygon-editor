@@ -3,7 +3,6 @@
 define([],
   function () {
     var Styles = {};
-console.log(OpenLayers)
     Styles.overStyle = new OpenLayers.Style(
     {
       strokeColor: "black", strokeWidth: 6, strokeOpacity: 0.3, 

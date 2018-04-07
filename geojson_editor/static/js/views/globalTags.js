@@ -26,7 +26,6 @@ function (_, Backbone) {
 
     render: function () {
       var self = this;
-      console.log("this is global-tags view", self, self.model.toJSON());
       this.$el.html(this.template({tags: self.model.toJSON()}) 
       );
 
@@ -47,7 +46,6 @@ function (_, Backbone) {
     saveTag: function (event) {
       var $target = $(event.currentTarget);
       var model = this.collection.get($target.data("id"));
-      console.log("saveTag:", model);
 
       if ($target.hasClass("key")) {
         model.set({key: $target.text()});
@@ -59,7 +57,6 @@ function (_, Backbone) {
 
     onEditableFocus: function (event) {
       // $(event.currentTarget).select();
-      console.log(event);
     }
 
   }); 

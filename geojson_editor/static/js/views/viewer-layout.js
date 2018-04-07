@@ -82,7 +82,6 @@ module.exports = Backbone.View.extend({
   
     export: function () {
       var layerId = $('#layerId').val();
-      console.log(layerId);
       this.mapView.toJSON(layerId);
     }
 
