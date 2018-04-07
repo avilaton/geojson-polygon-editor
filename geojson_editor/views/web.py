@@ -10,5 +10,4 @@ def index():
 
 @web.route('/editor/<layer_id>')
 def editor(layer_id):
-    print(layer_id)
     return render_template('editor.html', layer_id=layer_id)

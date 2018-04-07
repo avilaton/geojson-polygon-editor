@@ -12,7 +12,7 @@
     <link href="/static/stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
   </head>
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -20,10 +20,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="index.html">GeoJSON Polygons</a>
+          <a class="brand" href="index.html">GeoJSON Editor</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li id="obrasprivadasMenu"><a href="index.html">Layers</a></li>
+              <!-- <li id="obrasprivadasMenu"><a href="index.html">Layers</a></li> -->
             </ul>
           </div>
         </div>
@@ -32,16 +32,6 @@
     
     <div id="layout" class="container-fluid"></div>
 
-    <div id="footer" class="navbar navbar-inverse navbar-fixed-bottom">
-        <div class="navbar-inner">
-            <div class="container">
-                <ul class="nav">
-                    <li><a href="editor/obrasprivadas.html">Editar</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
     <script src="/static/js/lib/OpenLayers/OpenLayers.js"></script>
     {% if config.get('DEBUG') %}
     <script src="http://localhost:2992/editor.js"></script>
@@ -49,7 +39,10 @@
     <script src="/static/dist/editor.js"></script>
     {% endif %}
     <script>
-      var app = new GeoJsonEditor()
+      var resourceURL = {{('/api/layers/' + layer_id + '.geojson')|tojson}};
+      var app = new GeoJsonEditor({
+        resourceURL: resourceURL
+      });
     </script>
     <!-- <script src="http://maps.google.com/maps/api/js?v=3.6&sensor=false"></script> -->
     
