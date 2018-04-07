@@ -8,3 +8,4 @@ node_modules/
 .env
 *.sqlite
 geojson_editor/static/dist/
+.vscode/
