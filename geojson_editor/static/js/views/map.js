@@ -1,212 +1,209 @@
 var $ = require('jquery')
+var Backbone = require('backbone')
+var Styles = require('./styles')
 
 // var OpenLayers = require('exports-loader?OpenLayers!../lib/OpenLayers/OpenLayers.js')
 
-define([
-  "backbone",
-  "./styles"],
-  function (Backbone, Styles) {
-    'use strict';
+'use strict';
 
-    var MapView = Backbone.View.extend({
-      el: $("#mapBox"),
+var MapView = Backbone.View.extend({
+  el: $("#mapBox"),
 
-      initialize: function(layers){
-        var self = this,
-        bodyheight = $(window).height();
+  initialize: function(layers){
+    var self = this,
+    bodyheight = $(window).height();
 
-        $("#mapBox").height(bodyheight-80);
-        $(window).resize(function() {
-          bodyheight = $(window).height();
-          $("#mapBox").height(bodyheight-80);
-          setTimeout( function() { self.map.updateSize();}, 100);
-        });
+    $("#mapBox").height(bodyheight-80);
+    $(window).resize(function() {
+      bodyheight = $(window).height();
+      $("#mapBox").height(bodyheight-80);
+      setTimeout( function() { self.map.updateSize();}, 100);
+    });
 
-        this.map = new OpenLayers.Map('map', {
-          controls : [
-            new OpenLayers.Control.Navigation(),
-            new OpenLayers.Control.PanZoomBar(),
-            new OpenLayers.Control.LayerSwitcher({'ascending':false}),
-            new OpenLayers.Control.ScaleLine(),
-            new OpenLayers.Control.MousePosition({
-              displayProjection: new OpenLayers.Projection("EPSG:4326")
-            }),
-            new OpenLayers.Control.Attribution()
-          ]
-        });
+    this.map = new OpenLayers.Map('map', {
+      controls : [
+        new OpenLayers.Control.Navigation(),
+        new OpenLayers.Control.PanZoomBar(),
+        new OpenLayers.Control.LayerSwitcher({'ascending':false}),
+        new OpenLayers.Control.ScaleLine(),
+        new OpenLayers.Control.MousePosition({
+          displayProjection: new OpenLayers.Projection("EPSG:4326")
+        }),
+        new OpenLayers.Control.Attribution()
+      ]
+    });
 
-        window.map = this.map;
+    window.map = this.map;
 
-        this.baselayer = new OpenLayers.Layer.OSM('OSM Map');
+    this.baselayer = new OpenLayers.Layer.OSM('OSM Map');
 
-        this.map.addLayer(this.baselayer);
+    this.map.addLayer(this.baselayer);
 
-        this.format = new OpenLayers.Format.GeoJSON({
-          'internalProjection': this.map.baseLayer.projection,
-          'externalProjection': new OpenLayers.Projection("EPSG:4326")
-        });
+    this.format = new OpenLayers.Format.GeoJSON({
+      'internalProjection': this.map.baseLayer.projection,
+      'externalProjection': new OpenLayers.Projection("EPSG:4326")
+    });
 
-        this.addVectorLayer(self.model);
+    this.addVectorLayer(self.model);
 
-        // this.addSelectControl().activate();
-        this.addEditingControls();
-        // this.addEditingToolbar();
+    // this.addSelectControl().activate();
+    this.addEditingControls();
+    // this.addEditingToolbar();
 
-        this.model.on("change:filename", self.setCurrent, self);
+    this.model.on("change:filename", self.setCurrent, self);
 
-      },
+  },
 
-      panAndZoom: function (lon, lat, zoom) {
-        var lon = lon || -64.1857371;
-        var lat = lat || -31.4128832;
-        var zoom = zoom || 12;
+  panAndZoom: function (lon, lat, zoom) {
+    var lon = lon || -64.1857371;
+    var lat = lat || -31.4128832;
+    var zoom = zoom || 12;
 
-        this.map.setCenter(
-          new OpenLayers.LonLat(lon, lat).transform(
-            new OpenLayers.Projection("EPSG:4326"),
-            this.map.getProjectionObject()
-            ), zoom
-          );
-      },
+    this.map.setCenter(
+      new OpenLayers.LonLat(lon, lat).transform(
+        new OpenLayers.Projection("EPSG:4326"),
+        this.map.getProjectionObject()
+        ), zoom
+      );
+  },
 
-      addSelectControl: function () {
-        var self = this,
-          control;
+  addSelectControl: function () {
+    var self = this,
+      control;
 
-        this.selectControl = new OpenLayers.Control.SelectFeature(self.vectorLayer, {
-          clickout: true, toggle: true,
-          multiple: false, hover: false
-        });
+    this.selectControl = new OpenLayers.Control.SelectFeature(self.vectorLayer, {
+      clickout: true, toggle: true,
+      multiple: false, hover: false
+    });
 
-        this.selectControl.handlers['feature'].stopDown = false;
-        this.selectControl.handlers['feature'].stopUp = false;
+    this.selectControl.handlers['feature'].stopDown = false;
+    this.selectControl.handlers['feature'].stopUp = false;
 
-        this.map.addControl(self.selectControl);
+    this.map.addControl(self.selectControl);
 
-        return this.selectControl;
-      },
+    return this.selectControl;
+  },
 
-      addEditingToolbar: function (layerId) {
-        var self = this;
-        var control = new OpenLayers.Control.EditingToolbar(self.vectorLayer);
-        this.map.addControl(control);
-      },
+  addEditingToolbar: function (layerId) {
+    var self = this;
+    var control = new OpenLayers.Control.EditingToolbar(self.vectorLayer);
+    this.map.addControl(control);
+  },
 
-      addEditingControls: function () {
-        var self = this;
-        var ctrls = {};
+  addEditingControls: function () {
+    var self = this;
+    var ctrls = {};
 
-        ctrls.point = new OpenLayers.Control.DrawFeature(
-          self.vectorLayer,
-          OpenLayers.Handler.Point,
-          {'displayClass': 'olControlDrawFeaturePoint'}
-        );
+    ctrls.point = new OpenLayers.Control.DrawFeature(
+      self.vectorLayer,
+      OpenLayers.Handler.Point,
+      {'displayClass': 'olControlDrawFeaturePoint'}
+    );
 
-        ctrls.path = new OpenLayers.Control.DrawFeature(
-          self.vectorLayer,
-          OpenLayers.Handler.Path,
-          {'displayClass': 'olControlDrawFeaturePath'}
-        );
+    ctrls.path = new OpenLayers.Control.DrawFeature(
+      self.vectorLayer,
+      OpenLayers.Handler.Path,
+      {'displayClass': 'olControlDrawFeaturePath'}
+    );
 
-        ctrls.poly = new OpenLayers.Control.DrawFeature(
-          self.vectorLayer,
-          OpenLayers.Handler.Polygon,
-          {'displayClass': 'olControlDrawFeaturePolygon'}
-        );
+    ctrls.poly = new OpenLayers.Control.DrawFeature(
+      self.vectorLayer,
+      OpenLayers.Handler.Polygon,
+      {'displayClass': 'olControlDrawFeaturePolygon'}
+    );
 
-        ctrls.modify = new OpenLayers.Control.ModifyFeature(self.vectorLayer);
+    ctrls.modify = new OpenLayers.Control.ModifyFeature(self.vectorLayer);
 
-        ctrls.select = new OpenLayers.Control.SelectFeature(self.vectorLayer, {
-          clickout: true, 
-          toggle: true,
-          multiple: false, 
-          hover: false
-        });
+    ctrls.select = new OpenLayers.Control.SelectFeature(self.vectorLayer, {
+      clickout: true,
+      toggle: true,
+      multiple: false,
+      hover: false
+    });
 
-        ctrls.snap = new OpenLayers.Control.Snapping({
-          layer: self.vectorLayer,
-          targets: [self.vectorLayer],
-          greedy: false
-        });
+    ctrls.snap = new OpenLayers.Control.Snapping({
+      layer: self.vectorLayer,
+      targets: [self.vectorLayer],
+      greedy: false
+    });
 
-        ctrls.snap.activate();
+    ctrls.snap.activate();
 
-        ctrls.select.handlers['feature'].stopDown = false;
-        ctrls.select.handlers['feature'].stopUp = false;
+    ctrls.select.handlers['feature'].stopDown = false;
+    ctrls.select.handlers['feature'].stopUp = false;
 
-        var panel = new OpenLayers.Control.Panel({
-          defaultControl: ctrls.select
-        });
+    var panel = new OpenLayers.Control.Panel({
+      defaultControl: ctrls.select
+    });
 
-        panel.addControls([
-          ctrls.point,
-          ctrls.path,
-          ctrls.poly,
-          ctrls.modify,
-          ctrls.select
-        ]);
+    panel.addControls([
+      ctrls.point,
+      ctrls.path,
+      ctrls.poly,
+      ctrls.modify,
+      ctrls.select
+    ]);
 
-        this.map.addControl(panel);
-      },
+    this.map.addControl(panel);
+  },
 
-      addVectorLayer: function (model) {
-        var self = this;
-        var filename = model.get("filename");
+  addVectorLayer: function (model) {
+    var self = this;
+    var filename = model.get("filename");
 
-        this.vectorLayer = new OpenLayers.Layer.Vector("Vector Layer", {
-          visibility: true,
-          strategies: [new OpenLayers.Strategy.Fixed()],
-          styleMap: Styles["select"],
-          protocol: new OpenLayers.Protocol.HTTP({
-            format: new OpenLayers.Format.GeoJSON({
-              keepData: true
-            }),
-            url: "/api/layers/" + filename
-          })
-        });
+    this.vectorLayer = new OpenLayers.Layer.Vector("Vector Layer", {
+      visibility: true,
+      strategies: [new OpenLayers.Strategy.Fixed()],
+      styleMap: Styles["select"],
+      protocol: new OpenLayers.Protocol.HTTP({
+        format: new OpenLayers.Format.GeoJSON({
+          keepData: true
+        }),
+        url: "/api/layers/" + filename
+      })
+    });
 
-        this.map.addLayer(self.vectorLayer);
+    this.map.addLayer(self.vectorLayer);
 
-        this.vectorLayer.events.on({
-          "featureselected": self.selectedFeature,
-          "featureunselected": self.selectedFeature, 
-          "loadend": self.setCollectionTags,
-          scope: self
-        });
+    this.vectorLayer.events.on({
+      "featureselected": self.selectedFeature,
+      "featureunselected": self.selectedFeature,
+      "loadend": self.setCollectionTags,
+      scope: self
+    });
 
-        this.vectorLayer.events.fallThrough = true;
-      },
+    this.vectorLayer.events.fallThrough = true;
+  },
 
-      setCurrent: function (selectedLayer) {
-        var self = this;
-        var filename = selectedLayer.get("filename");
-        this.vectorLayer.refresh({url:'/api/layers/'+ filename});
-      },
+  setCurrent: function (selectedLayer) {
+    var self = this;
+    var filename = selectedLayer.get("filename");
+    this.vectorLayer.refresh({url:'/api/layers/'+ filename});
+  },
 
-      setCollectionTags: function (event) {
-        this.model.set("collectionTags",this.vectorLayer.protocol.format.data.properties);
-      },
+  setCollectionTags: function (event) {
+    this.model.set("collectionTags",this.vectorLayer.protocol.format.data.properties);
+  },
 
-      getLayerGeoJSON: function (layerId) {
-        var features = this.vectorLayer.features;
-        var GeoJSONString = this.format.write(features);
-        var GeoJSONObject;
+  getLayerGeoJSON: function (layerId) {
+    var features = this.vectorLayer.features;
+    var GeoJSONString = this.format.write(features);
+    var GeoJSONObject;
 
-        if (features[0]) {
-          GeoJSONObject = JSON.parse(GeoJSONString);
-          GeoJSONObject.crs = this.format.createCRSObject(features[0]);
-        };
-        
-        GeoJSONString = JSON.stringify(GeoJSONObject);
-        return GeoJSONString;
-      },
+    if (features[0]) {
+      GeoJSONObject = JSON.parse(GeoJSONString);
+      GeoJSONObject.crs = this.format.createCRSObject(features[0]);
+    };
 
-      selectedFeature: function (event) {
-        this.model.set("selected", event.feature);
-        this.model.trigger("featureEvent", event);
-      }
+    GeoJSONString = JSON.stringify(GeoJSONObject);
+    return GeoJSONString;
+  },
 
-    }); 
+  selectedFeature: function (event) {
+    this.model.set("selected", event.feature);
+    this.model.trigger("featureEvent", event);
+  }
 
-return MapView;
 });
+
+module.exports = MapView;
