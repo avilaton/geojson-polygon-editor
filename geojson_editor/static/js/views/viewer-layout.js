@@ -4,7 +4,6 @@ var $ = require('jquery')
 var tmpl = require('../../templates/viewer-layout.handlebars')
 
 var TagsCollection = require('../collections/tags')
-var LayersCollection = require('../collections/layers')
 var MapView = require('./map')
 var TagsView = require('./tags')
 
