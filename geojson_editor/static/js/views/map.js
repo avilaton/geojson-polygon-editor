@@ -1,17 +1,17 @@
 var $ = require('jquery')
 var Backbone = require('backbone')
 var Styles = require('./styles')
-
-// var OpenLayers = require('exports-loader?OpenLayers!../lib/OpenLayers/OpenLayers.js')
+var _isUndefined = require('lodash/isUndefined')
 
 'use strict';
 
 var MapView = Backbone.View.extend({
-  el: $("#mapBox"),
+  // el: $("#mapBox"),
 
-  initialize: function(layers){
+  initialize: function(options){
     var self = this,
     bodyheight = $(window).height();
+    console.log('options', options.mapElement)
 
     $("#mapBox").height(bodyheight-80);
     $(window).resize(function() {
@@ -19,8 +19,8 @@ var MapView = Backbone.View.extend({
       $("#mapBox").height(bodyheight-80);
       setTimeout( function() { self.map.updateSize();}, 100);
     });
-
-    this.map = new OpenLayers.Map('map', {
+    var mapEl = _isUndefined(options.mapElement)? 'map': options.mapElement
+    this.map = new OpenLayers.Map(mapEl, {
       controls : [
         new OpenLayers.Control.Navigation(),
         new OpenLayers.Control.PanZoomBar(),

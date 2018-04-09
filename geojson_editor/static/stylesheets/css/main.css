@@ -10,6 +10,9 @@ body {
     height:98%;
     width:100%;
 }
+.map-container {
+    height: 400px;
+}
 #footer .navbar-inner{
     min-height:15px;
 }
